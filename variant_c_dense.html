@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMC Offense — Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #06224C;
+    --navy-2:  #0A2E66;
+    --navy-3:  #133A7A;
+    --red:     #C8102E;
+    --silver:  #A2AAAD;
+    --bg:      #F7F8FA;
+    --surface: #FFFFFF;
+    --surface-2: #F2F4F7;
+    --line:    #E4E7EC;
+    --line-2:  #CED2D9;
+    --text:    #101828;
+    --muted:   #667085;
+    --good:    #079455;
+    --good-bg: #ECFDF3;
+    --mid:     #DC6803;
+    --mid-bg:  #FFFAEB;
+    --low:     #B42318;
+    --low-bg:  #FEF3F2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 13px; }
+  body { min-height: 100vh; display: grid; grid-template-columns: 232px 1fr; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── sidebar ── */
+  aside.sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    padding: 24px 16px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px 24px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 20px;
+  }
+  .brand img { height: 32px; }
+  .brand-text { line-height: 1.15; }
+  .brand-name { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .brand-sub { font-size: 10px; color: var(--muted); margin-top: 1px; letter-spacing: 0.04em; }
+
+  .nav-group { margin-bottom: 18px; }
+  .nav-group-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 1px;
+    font-weight: 500;
+  }
+  .nav-item:hover { background: var(--surface-2); }
+  .nav-item.active { background: var(--navy); color: #fff; }
+  .nav-item.active .nav-count { color: rgba(255,255,255,0.7); }
+  .nav-icon { font-size: 14px; width: 16px; text-align: center; }
+  .nav-count {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .filter-toggle input { accent-color: var(--navy); }
+  .filter-toggle:hover { color: var(--text); }
+
+  /* ── main ── */
+  main.content { padding: 24px 32px 64px; max-width: 1400px; }
+
+  /* page header */
+  .page-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-title-block .crumbs {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .page-title-block h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.015em;
+  }
+  .page-title-block .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .page-meta {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .pm-block { text-align: right; }
+  .pm-v { font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+  .pm-l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ── KPI strip ── */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface);
+    margin-bottom: 20px;
+  }
+  .kpi {
+    padding: 14px 16px;
+    border-right: 1px solid var(--line);
+  }
+  .kpi:last-child { border-right: none; }
+  .kpi-l {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .kpi-v {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-trend {
+    font-size: 10px;
+    color: var(--good);
+    margin-top: 2px;
+    font-weight: 600;
+  }
+  .kpi-trend.down { color: var(--low); }
+
+  /* ── comparison table ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .panel-head {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panel-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .panel-meta { font-size: 11px; color: var(--muted); }
+
+  table.compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.compare thead th {
+    padding: 9px 14px;
+    text-align: left;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  table.compare thead th:hover { color: var(--text); }
+  table.compare thead th.num { text-align: right; }
+  table.compare thead th.sorted { color: var(--navy); }
+  table.compare tbody tr {
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: background .1s;
+  }
+  table.compare tbody tr:hover { background: var(--surface-2); }
+  table.compare tbody tr:last-child { border-bottom: none; }
+  table.compare tbody td {
+    padding: 11px 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  table.compare tbody td.num { text-align: right; }
+  table.compare tbody td.label-cell {
+    font-weight: 600;
+    color: var(--text);
+  }
+  table.compare tbody td.label-cell .rank {
+    display: inline-block;
+    min-width: 22px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-right: 8px;
+    font-weight: 500;
+  }
+  table.compare tbody td.label-cell .top-action {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .ppp-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .ppp-pill.good { background: var(--good-bg); color: var(--good); }
+  .ppp-pill.mid  { background: var(--mid-bg);  color: var(--mid); }
+  .ppp-pill.low  { background: var(--low-bg);  color: var(--low); }
+
+  td.tier-good { color: var(--good); font-weight: 600; }
+  td.tier-mid  { color: var(--mid);  font-weight: 600; }
+  td.tier-low  { color: var(--low);  font-weight: 600; }
+
+  .spark-cell svg { display: block; margin-left: auto; }
+
+  /* ── small cards row (reinforcement) ── */
+  .mini-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .mini-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color .1s;
+    position: relative;
+  }
+  .mini-card:hover { border-color: var(--navy); }
+  .mini-card::before {
+    content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px;
+    border-radius: 0 2px 2px 0;
+  }
+  .mini-card.good::before { background: var(--good); }
+  .mini-card.mid::before  { background: var(--mid); }
+  .mini-card.low::before  { background: var(--low); }
+  .mini-card .mc-title { font-size: 11px; color: var(--muted); margin-bottom: 6px; font-weight: 500; padding-left: 10px; }
+  .mini-card .mc-val { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; padding-left: 10px; font-variant-numeric: tabular-nums; }
+  .mini-card .mc-sub { font-size: 11px; color: var(--muted); margin-top: 2px; padding-left: 10px; }
+
+  /* ── timeline ── */
+  .timeline-panel { padding: 16px 18px 18px; }
+  .tl-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .tl-actions {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+  }
+  .tl-btn {
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+  }
+  .tl-btn:hover { color: var(--navy); border-color: var(--navy); }
+  .tl-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  .tl-spark {
+    height: 80px;
+    position: relative;
+    margin: 4px 0 8px;
+  }
+  .tl-spark svg { width: 100%; height: 100%; display: block; }
+  .tl-game-marker {
+    position: absolute;
+    bottom: 0;
+    width: 16px;
+    transform: translateX(-50%);
+    border-radius: 2px 2px 0 0;
+    cursor: pointer;
+    transition: opacity .1s;
+  }
+  .tl-game-marker.win  { background: var(--navy); }
+  .tl-game-marker.loss { background: var(--red); }
+  .tl-game-marker:hover { opacity: 0.7; }
+  .tl-game-marker.unselected { opacity: 0.25; }
+
+  .tl-game-list {
+    display: grid;
+    grid-template-columns: repeat(33, 1fr);
+    gap: 2px;
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .tl-game-list span:not(:nth-child(5n+1)) { visibility: hidden; }
+
+  /* modal */
+  .modal-bg {
+    position: fixed; inset: 0; background: rgba(6,34,76,0.5);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center; z-index: 50;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--surface); padding: 32px 40px; border-radius: 10px;
+    max-width: 460px; text-align: center; border: 1px solid var(--line);
+  }
+  .modal h3 { color: var(--navy); font-size: 20px; margin-bottom: 12px; letter-spacing: -0.02em; }
+  .modal p  { color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .modal-close {
+    margin-top: 20px; background: var(--navy); color: #fff; border: none;
+    padding: 9px 22px; border-radius: 6px; font-weight: 500; font-size: 12px;
+    cursor: pointer; font-family: inherit;
+  }
+
+  .footer-note {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--silver);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <img src="_shared/smc_logo.png" alt="SMC">
+    <div class="brand-text">
+      <div class="brand-name">Saint Mary's</div>
+      <div class="brand-sub">OFFENSE · 25–26</div>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Overview</div>
+    <a class="nav-item active"><span class="nav-icon">◫</span>Dashboard<span class="nav-count">33</span></a>
+    <a class="nav-item"><span class="nav-icon">⇄</span>Compare<span class="nav-count">—</span></a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Offensive Segments</div>
+    <a class="nav-item"><span class="nav-icon">→</span>Early / Trail<span class="nav-count">1,109</span></a>
+    <a class="nav-item"><span class="nav-icon">⊕</span>Ball Screen<span class="nav-count">234</span></a>
+    <a class="nav-item"><span class="nav-icon">▦</span>Half-Court<span class="nav-count">917</span></a>
+    <a class="nav-item"><span class="nav-icon">↻</span>Out of Bounds<span class="nav-count">223</span></a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Lens</div>
+    <a class="nav-item"><span class="nav-icon">⚐</span>Players</a>
+    <a class="nav-item"><span class="nav-icon">⚑</span>Opponents</a>
+    <a class="nav-item"><span class="nav-icon">▶</span>Film Clips</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Quick Filters</div>
+    <label class="filter-toggle"><input type="checkbox" checked>Home games</label>
+    <label class="filter-toggle"><input type="checkbox" checked>Away games</label>
+    <label class="filter-toggle"><input type="checkbox">Conference only</label>
+    <label class="filter-toggle"><input type="checkbox">Top-50 KP opp</label>
+  </div>
+
+  <div style="margin-top:24px;padding:10px;font-size:10px;color:var(--silver);text-align:center;border-top:1px solid var(--line);padding-top:16px">
+    <a href="index.html" style="color:var(--muted);text-decoration:none">← All variants</a>
+  </div>
+</aside>
+
+<main class="content">
+  <div class="page-head">
+    <div class="page-title-block">
+      <div class="crumbs">Overview › Season Dashboard</div>
+      <h1 id="page-h1">2025–26 Offensive Season</h1>
+      <div class="subtitle" id="page-sub">—</div>
+    </div>
+    <div class="page-meta">
+      <div class="pm-block"><div class="pm-v" id="pm-rec">—</div><div class="pm-l">Record</div></div>
+      <div class="pm-block"><div class="pm-v" id="pm-ppg">—</div><div class="pm-l">PPG</div></div>
+      <div class="pm-block"><div class="pm-v" id="pm-margin">—</div><div class="pm-l">Margin</div></div>
+    </div>
+  </div>
+
+  <!-- KPI strip -->
+  <div class="kpis" id="kpis"></div>
+
+  <!-- Comparison table -->
+  <div class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Offensive Segments — Compare All</div>
+        <div class="panel-meta" style="margin-top:2px">Sortable · click any row for detail</div>
+      </div>
+      <div class="panel-meta">Sort by ▼ PPP</div>
+    </div>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Segment</th>
+          <th class="num">Poss</th>
+          <th class="num sorted">PPP ↓</th>
+          <th class="num">eFG%</th>
+          <th class="num">TO%</th>
+          <th class="num">OREB%</th>
+          <th class="num">FT Rate</th>
+          <th class="num">Trend</th>
+        </tr>
+      </thead>
+      <tbody id="compare-body"></tbody>
+    </table>
+  </div>
+
+  <!-- Mini cards visual reinforcement -->
+  <div class="mini-cards" id="mini-cards"></div>
+
+  <!-- Timeline -->
+  <div class="panel timeline-panel">
+    <div class="tl-row">
+      <div>
+        <div class="panel-title">Season Timeline</div>
+        <div class="panel-meta" id="tl-meta">PPG by game · click bars to filter</div>
+      </div>
+      <div class="tl-actions">
+        <button class="tl-btn active" data-f="all">All 33</button>
+        <button class="tl-btn" data-f="wins">Wins</button>
+        <button class="tl-btn" data-f="losses">Losses</button>
+        <button class="tl-btn" data-f="conf">WCC</button>
+        <button class="tl-btn" data-f="nonconf">Non-Conf</button>
+      </div>
+    </div>
+    <div class="tl-spark" id="tl-spark"></div>
+    <div class="tl-game-list" id="tl-game-list"></div>
+  </div>
+
+  <div class="footer-note">Mock data · Design prototype · Variant C — Data Dense Pro</div>
+</main>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="m-title">Segment Detail</h3>
+    <p>Detailed breakdown panel coming next iteration — sub-action splits, coverage cross-tabs, per-game performance, video timecodes.</p>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">Close</button>
+  </div>
+</div>
+
+<script src="_shared/mock_data.js"></script>
+<script>
+  // page head
+  document.getElementById('page-sub').innerHTML =
+    `${MOCK.season.team} · ${MOCK.season.conference} · ${MOCK.season.games} games`;
+  document.getElementById('pm-rec').textContent = MOCK.season.record;
+  document.getElementById('pm-ppg').textContent = MOCK.overall.ppg.toFixed(1);
+  document.getElementById('pm-margin').textContent = '+' + MOCK.overall.margin.toFixed(1);
+
+  // KPIs
+  const kpis = [
+    { l: 'PPP',         v: MOCK.overall.ppp.toFixed(2), trend: '+0.04 vs LY', dir: 'up' },
+    { l: 'Possessions', v: MOCK.overall.total_poss.toLocaleString(), trend: '76.4/g', dir: 'up' },
+    { l: 'eFG%',        v: MOCK.overall.efg + '%', trend: '+1.2 vs LY', dir: 'up' },
+    { l: 'TO%',         v: MOCK.overall.to_pct + '%', trend: '-0.8 vs LY', dir: 'up' },
+    { l: 'OREB%',       v: MOCK.overall.oreb + '%', trend: '-0.5 vs LY', dir: 'down' },
+    { l: 'FT Rate',     v: MOCK.overall.ft_rate + '%', trend: '+1.3 vs LY', dir: 'up' },
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(k => `
+    <div class="kpi">
+      <div class="kpi-l">${k.l}</div>
+      <div class="kpi-v">${k.v}</div>
+      <div class="kpi-trend ${k.dir==='down'?'down':''}">${k.dir==='up'?'▲':'▼'} ${k.trend}</div>
+    </div>
+  `).join('');
+
+  // compare table
+  function tierCell(metric, value, suffix='%') {
+    const t = tierColor(metric, value);
+    return `<td class="num tier-${t}">${value}${suffix}</td>`;
+  }
+  function pppPill(v) {
+    const t = tierColor('ppp', v);
+    return `<span class="ppp-pill ${t}">${v.toFixed(2)}</span>`;
+  }
+  function microSpark(points, width=80, height=22) {
+    const max = Math.max(...points), min = Math.min(...points);
+    const rng = max - min || 1;
+    const stepX = width / (points.length - 1);
+    const pts = points.map((p, i) => `${(i*stepX).toFixed(1)},${(height - ((p-min)/rng)*height).toFixed(1)}`).join(' ');
+    return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><polyline points="${pts}" fill="none" stroke="var(--navy)" stroke-width="1.2"/></svg>`;
+  }
+
+  const sorted = [...MOCK.sections].sort((a,b) => a.rank - b.rank);
+  document.getElementById('compare-body').innerHTML = sorted.map(s => `
+    <tr onclick="openDetail('${s.key}','${s.title}')">
+      <td class="label-cell">
+        <span class="rank">#${s.rank}</span>${s.title}
+        <span class="top-action">Top action: <b>${s.top_action}</b></span>
+      </td>
+      <td class="num mono">${s.poss.toLocaleString()}</td>
+      <td class="num">${pppPill(s.ppp)}</td>
+      ${tierCell('efg', s.efg)}
+      ${tierCell('to_pct', s.to_pct)}
+      ${tierCell('oreb', s.oreb)}
+      ${tierCell('ft_rate', s.ft_rate)}
+      <td class="num spark-cell">${microSpark(s.trend)}</td>
+    </tr>
+  `).join('');
+
+  // mini cards
+  document.getElementById('mini-cards').innerHTML = sorted.map(s => {
+    const t = tierColor('ppp', s.ppp);
+    return `
+    <div class="mini-card ${t}" onclick="openDetail('${s.key}','${s.title}')">
+      <div class="mc-title">${s.title}</div>
+      <div class="mc-val">${s.ppp.toFixed(2)} <span style="font-size:11px;color:var(--muted);font-weight:500">PPP</span></div>
+      <div class="mc-sub">${s.poss.toLocaleString()} poss · eFG ${s.efg}%</div>
+    </div>`;
+  }).join('');
+
+  // timeline spark
+  const spark = document.getElementById('tl-spark');
+  const games = MOCK.games;
+  // Synth PPG-per-game from average score (for design — not real)
+  const ppgs = games.map(g => g.smc);
+  const w = 1, h = 80;
+  const maxP = Math.max(...ppgs), minP = Math.min(...ppgs);
+  const rng = maxP - minP || 1;
+
+  spark.innerHTML =
+    `<svg viewBox="0 0 ${games.length-1} 80" preserveAspectRatio="none" style="position:absolute;inset:0;">
+      <polyline points="${ppgs.map((p,i) => `${i},${(80-((p-minP)/rng)*80).toFixed(1)}`).join(' ')}" fill="none" stroke="var(--navy)" stroke-width="0.4" opacity="0.4" vector-effect="non-scaling-stroke"/>
+    </svg>` +
+    games.map((g, i) => {
+      const x = (i / (games.length-1)) * 100;
+      const height = 8 + ((g.smc - minP) / rng) * 56;
+      return `<div class="tl-game-marker ${g.result==='W'?'win':'loss'}" data-num="${g.num}" data-result="${g.result}" data-conf="${g.conf}" style="left:${x}%;height:${height}px;" title="G${g.num}: ${g.opp} ${g.result} ${g.smc}-${g.opp_score}"></div>`;
+    }).join('');
+
+  document.getElementById('tl-game-list').innerHTML = games.map(g => `<span>${g.num}</span>`).join('');
+
+  let selected = new Set(games.map(g => g.num));
+  let lastClicked = null;
+  spark.querySelectorAll('.tl-game-marker').forEach(el => {
+    el.addEventListener('click', e => {
+      const n = +el.dataset.num;
+      if (e.shiftKey && lastClicked !== null) {
+        const a = Math.min(lastClicked, n), b = Math.max(lastClicked, n);
+        for (let i = a; i <= b; i++) selected.add(i);
+      } else {
+        selected.has(n) ? selected.delete(n) : selected.add(n);
+        lastClicked = n;
+      }
+      refreshSpark();
+    });
+  });
+  function refreshSpark() {
+    spark.querySelectorAll('.tl-game-marker').forEach(el => {
+      el.classList.toggle('unselected', !selected.has(+el.dataset.num));
+    });
+    document.getElementById('tl-meta').textContent =
+      selected.size === games.length ? `PPG by game · click bars to filter` :
+      `${selected.size} of ${games.length} games selected`;
+  }
+  document.querySelectorAll('.tl-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.f;
+      selected = new Set(games.filter(g =>
+        f === 'all' ? true :
+        f === 'wins' ? g.result === 'W' :
+        f === 'losses' ? g.result === 'L' :
+        f === 'conf' ? g.conf : !g.conf
+      ).map(g => g.num));
+      refreshSpark();
+    });
+  });
+
+  function openDetail(key, title) {
+    document.getElementById('m-title').textContent = title;
+    document.getElementById('modal').classList.add('open');
+  }
+</script>
+</body>
+</html>

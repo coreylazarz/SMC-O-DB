@@ -1,0 +1,361 @@
+// Shared mock data for SMC Offense Dashboard prototypes.
+// Numbers are realistic — anchored to real-season ranges but tweaked for design demos.
+
+const MOCK = {
+  season: {
+    team:   "Saint Mary's Gaels",
+    year:   "2025–26",
+    games:  33,
+    record: "27-6",
+    conference: "West Coast Conference",
+  },
+
+  overall: {
+    ppp:        1.13,
+    total_poss: 2501,
+    efg:        53.4,
+    to_pct:     13.8,
+    oreb:       32.1,
+    ft_rate:    24.7,
+    ppg:        76.4,
+    margin:     12.8,
+  },
+
+  sections: [
+    {
+      key:        'transition',
+      title:      'Transition',
+      short:      'Transition',
+      ppp:        1.32, poss: 412,
+      efg:        61.4, to_pct: 10.2, oreb: 24.5, ft_rate: 19.8,
+      rank:       1,
+      top_action: 'Throw Ahead',
+      trend: [1.28,1.42,1.55,1.22,1.35,1.72,1.05,1.18,0.92,1.38,
+              1.02,1.45,1.18,1.28,1.55,1.41,1.52,1.28,1.37,0.95,
+              1.49,1.31,1.01,1.40,1.52,1.48,1.26,1.32,1.44,1.51,
+              1.32,1.04,0.88],
+    },
+    {
+      key:        'early',
+      title:      'Early / Motion',
+      short:      'Early/Motion',
+      ppp:        1.15, poss: 697,
+      efg:        53.8, to_pct: 12.1, oreb: 34.5, ft_rate: 24.0,
+      rank:       3,
+      top_action: 'Post W Entry',
+      trend: [1.12,1.25,1.32,1.08,1.15,1.52,0.91,1.05,0.82,1.18,
+              0.85,1.24,1.02,1.12,1.35,1.21,1.32,1.15,1.18,0.82,
+              1.30,1.15,0.85,1.22,1.32,1.28,1.10,1.15,1.24,1.31,
+              1.15,0.88,0.76],
+    },
+    {
+      key:        'onball',
+      title:      'Ball Screen',
+      short:      'Ball Screen',
+      ppp:        1.10, poss: 234,
+      efg:        51.0, to_pct: 14.9, oreb: 28.5, ft_rate: 26.1,
+      rank:       4,
+      top_action: 'Side P&R vs Drop',
+      trend: [1.05,0.95,1.22,1.18,1.08,1.31,1.02,1.15,0.78,1.12,
+              1.04,1.21,0.98,1.18,1.05,1.22,1.31,1.08,1.14,0.91,
+              1.18,1.05,0.88,1.22,1.31,1.15,1.08,1.14,1.21,1.18,
+              1.12,0.92,0.85],
+    },
+    {
+      key:        'halfcourt',
+      title:      'Half-Court Sets',
+      short:      'Half-Court',
+      ppp:        1.14, poss: 917,
+      efg:        54.1, to_pct: 13.2, oreb: 33.7, ft_rate: 25.8,
+      rank:       2,
+      top_action: 'Zone Hi/Lo',
+      trend: [1.08,1.18,1.25,1.10,1.14,1.35,1.05,1.12,0.88,1.18,
+              1.02,1.21,1.08,1.15,1.22,1.18,1.28,1.12,1.18,0.95,
+              1.22,1.14,0.98,1.18,1.25,1.20,1.12,1.18,1.22,1.20,
+              1.15,0.95,0.82],
+    },
+    {
+      key:        'uob',
+      title:      'Underneath OB',
+      short:      'UOB',
+      ppp:        1.11, poss: 223,
+      efg:        52.3, to_pct: 16.1, oreb: 22.9, ft_rate: 28.4,
+      rank:       5,
+      top_action: 'Box Slip',
+      trend: [1.02,1.18,1.25,0.95,1.11,1.42,0.88,1.05,0.75,1.18,
+              1.02,1.31,0.95,1.15,1.18,1.22,1.35,1.05,1.18,0.85,
+              1.28,1.08,0.92,1.18,1.31,1.18,1.05,1.12,1.21,1.15,
+              1.08,0.88,0.78],
+    },
+  ],
+
+  games: [
+    { num: 1,  date: '11/03', opp: 'St. Thomas',     result: 'W', smc: 84, opp_score: 58, conf: false },
+    { num: 2,  date: '11/07', opp: 'Chattanooga',    result: 'W', smc: 87, opp_score: 66, conf: false },
+    { num: 3,  date: '11/11', opp: 'Ohio',           result: 'W', smc: 90, opp_score: 60, conf: false },
+    { num: 4,  date: '11/14', opp: 'North Texas',    result: 'W', smc: 80, opp_score: 49, conf: false },
+    { num: 5,  date: '11/19', opp: 'Arkansas St.',   result: 'W', smc: 85, opp_score: 72, conf: false },
+    { num: 6,  date: '11/22', opp: 'UC Merced',      result: 'W', smc: 96, opp_score: 42, conf: false },
+    { num: 7,  date: '11/26', opp: 'Wichita St.',    result: 'W', smc: 70, opp_score: 65, conf: false },
+    { num: 8,  date: '11/27', opp: 'Virginia Tech',  result: 'W', smc: 77, opp_score: 66, conf: false },
+    { num: 9,  date: '11/28', opp: 'Vanderbilt',     result: 'L', smc: 71, opp_score: 96, conf: false },
+    { num: 10, date: '12/07', opp: 'Davidson',       result: 'W', smc: 70, opp_score: 61, conf: false },
+    { num: 11, date: '12/14', opp: 'Boise St.',      result: 'L', smc: 67, opp_score: 68, conf: false },
+    { num: 12, date: '12/19', opp: 'Fla. Atlantic',  result: 'W', smc: 88, opp_score: 75, conf: false },
+    { num: 13, date: '12/22', opp: 'UNI',            result: 'W', smc: 63, opp_score: 58, conf: false },
+    { num: 14, date: '12/28', opp: 'LMU',            result: 'W', smc: 78, opp_score: 73, conf: true  },
+    { num: 15, date: '12/30', opp: 'Pepperdine',     result: 'W', smc: 72, opp_score: 45, conf: true  },
+    { num: 16, date: '01/02', opp: 'Portland',       result: 'W', smc: 78, opp_score: 57, conf: true  },
+    { num: 17, date: '01/04', opp: 'Seattle U',      result: 'W', smc: 93, opp_score: 76, conf: true  },
+    { num: 18, date: '01/10', opp: 'Washington St.', result: 'W', smc: 88, opp_score: 82, conf: true  },
+    { num: 19, date: '01/13', opp: 'San Francisco',  result: 'W', smc: 82, opp_score: 68, conf: true  },
+    { num: 20, date: '01/17', opp: 'Santa Clara',    result: 'L', smc: 54, opp_score: 62, conf: true  },
+    { num: 21, date: '01/21', opp: 'Oregon St.',     result: 'W', smc: 81, opp_score: 51, conf: true  },
+    { num: 22, date: '01/24', opp: 'Portland',       result: 'W', smc: 75, opp_score: 69, conf: true  },
+    { num: 23, date: '01/31', opp: 'Gonzaga',        result: 'L', smc: 65, opp_score: 73, conf: true  },
+    { num: 24, date: '02/04', opp: 'San Diego',      result: 'W', smc: 87, opp_score: 60, conf: true  },
+    { num: 25, date: '02/07', opp: 'San Francisco',  result: 'W', smc: 79, opp_score: 54, conf: true  },
+    { num: 26, date: '02/11', opp: 'Pepperdine',     result: 'W', smc: 88, opp_score: 60, conf: true  },
+    { num: 27, date: '02/14', opp: 'Pacific',        result: 'W', smc: 72, opp_score: 61, conf: true  },
+    { num: 28, date: '02/18', opp: 'Seattle U',      result: 'W', smc: 72, opp_score: 70, conf: true  },
+    { num: 29, date: '02/21', opp: 'Washington St.', result: 'W', smc: 83, opp_score: 67, conf: true  },
+    { num: 30, date: '02/25', opp: 'Santa Clara',    result: 'W', smc: 86, opp_score: 67, conf: true  },
+    { num: 31, date: '02/28', opp: 'Gonzaga',        result: 'W', smc: 70, opp_score: 59, conf: true  },
+    { num: 32, date: '03/09', opp: 'Santa Clara',    result: 'L', smc: 71, opp_score: 76, conf: true,  postseason: 'WCC' },
+    { num: 33, date: '03/19', opp: 'Texas A&M',      result: 'L', smc: 50, opp_score: 63, conf: false, postseason: 'NCAA' },
+  ],
+};
+
+// ── drill-down detail data ─────────────────────────────────────────────────
+MOCK.detail = {
+  transition: {
+    definition: 'Possessions completed within the first 10 seconds of the shot clock.',
+    triggers: [
+      { name: 'Off Miss',     poss: 220, ppp: 1.35, efg: 62.4, to_pct: 9.1,  oreb: 24.3, ft_rate: 20.5 },
+      { name: 'Off Make',     poss: 140, ppp: 1.18, efg: 55.8, to_pct: 12.9, oreb: 26.4, ft_rate: 22.1 },
+      { name: 'Off Turnover', poss: 52,  ppp: 1.65, efg: 70.2, to_pct: 7.7,  oreb: 18.9, ft_rate: 24.3 },
+    ],
+    players: [
+      { name: 'Mikey Lewis',           number: 3,  pos: 'PG', poss: 88, ppp: 1.41, share: 21.4, efg: 60.2 },
+      { name: 'Paulius Murauskas',     number: 34, pos: 'PF', poss: 72, ppp: 1.38, share: 17.5, efg: 64.1 },
+      { name: 'Joshua Dent',           number: 11, pos: 'CG', poss: 68, ppp: 1.28, share: 16.5, efg: 56.8 },
+      { name: 'Augustas Marciulionis', number: 1,  pos: 'PG', poss: 52, ppp: 1.42, share: 12.6, efg: 59.5 },
+      { name: 'Luke Barrett',          number: 15, pos: 'SG', poss: 41, ppp: 1.22, share: 10.0, efg: 53.1 },
+      { name: 'Jordan Ross',           number: 50, pos: 'C',  poss: 38, ppp: 1.18, share: 9.2,  efg: 55.4 },
+      { name: 'Cam Wilbon',            number: 22, pos: 'SF', poss: 28, ppp: 1.31, share: 6.8,  efg: 58.0 },
+    ],
+    // 5-man lineups — total_poss is overall season possessions played together.
+    // trans_poss / ppp / efg / to_pct are transition-only stats for that unit.
+    // Displayed: total_poss >= 200.
+    lineups: [
+      { players: ['Marciulionis','Lewis','Dent','Wilbon','Murauskas'],   total_poss: 1240, trans_poss: 215, ppp: 1.45, efg: 65.1, to_pct: 8.2 },
+      { players: ['Marciulionis','Lewis','Barrett','Wilbon','Murauskas'], total_poss: 268,  trans_poss: 52,  ppp: 1.42, efg: 62.3, to_pct: 9.1 },
+      { players: ['Lewis','Dent','Barrett','Wilbon','Murauskas'],         total_poss: 542,  trans_poss: 98,  ppp: 1.39, efg: 60.8, to_pct: 10.4 },
+      { players: ['Marciulionis','Lewis','Dent','Murauskas','Ross'],      total_poss: 418,  trans_poss: 71,  ppp: 1.34, efg: 58.6, to_pct: 11.1 },
+      { players: ['Lewis','Marciulionis','Dent','Wilbon','Ross'],         total_poss: 234,  trans_poss: 41,  ppp: 1.32, efg: 57.4, to_pct: 11.8 },
+      { players: ['Marciulionis','Barrett','Dent','Wilbon','Murauskas'],  total_poss: 312,  trans_poss: 54,  ppp: 1.28, efg: 55.2, to_pct: 12.1 },
+      { players: ['Marciulionis','Lewis','Wilbon','Murauskas','Ross'],    total_poss: 205,  trans_poss: 36,  ppp: 1.24, efg: 53.8, to_pct: 11.5 },
+      { players: ['Lewis','Dent','Wilbon','Murauskas','Ross'],            total_poss: 218,  trans_poss: 38,  ppp: 1.18, efg: 51.4, to_pct: 13.8 },
+      { players: ['Lewis','Barrett','Dent','Wilbon','Ross'],              total_poss: 285,  trans_poss: 46,  ppp: 1.15, efg: 50.6, to_pct: 13.5 },
+      { players: ['Marciulionis','Dent','Barrett','Murauskas','Ross'],    total_poss: 245,  trans_poss: 38,  ppp: 1.05, efg: 47.8, to_pct: 14.6 },
+    ],
+    excluded_lineups: 14,
+  },
+
+  // ── EARLY / MOTION ────────────────────────────────────────────────────
+  early: {
+    definition: 'Early-motion possessions that flow into the half court following primary transition. Excludes pure Trans/FB.',
+    actions: [
+      { name: 'Post (W Entry)',   poss: 241, ppp: 1.18, efg: 56.5, to_pct: 11.4, oreb: 31.2, ft_rate: 24.5 },
+      { name: 'Pen',              poss: 76,  ppp: 1.05, efg: 49.8, to_pct: 14.1, oreb: 28.4, ft_rate: 22.1 },
+      { name: 'Throw Ahead',      poss: 62,  ppp: 1.12, efg: 53.4, to_pct: 12.8, oreb: 27.5, ft_rate: 23.2 },
+      { name: 'T - 46',           poss: 41,  ppp: 1.22, efg: 58.6, to_pct: 10.5, oreb: 32.1, ft_rate: 25.8 },
+      { name: 'T - Hi/Lo',        poss: 39,  ppp: 1.31, efg: 61.2, to_pct: 9.8,  oreb: 33.4, ft_rate: 26.7 },
+      { name: 'Drag',             poss: 28,  ppp: 1.14, efg: 54.5, to_pct: 12.0, oreb: 30.3, ft_rate: 24.0 },
+      { name: 'T - Side -> Step', poss: 27,  ppp: 1.08, efg: 51.2, to_pct: 13.6, oreb: 29.1, ft_rate: 22.4 },
+      { name: 'T - Get',          poss: 14,  ppp: 1.02, efg: 48.6, to_pct: 15.2, oreb: 26.8, ft_rate: 21.5 },
+      { name: 'Roadrunner',       poss: 4,   ppp: 1.45, efg: 65.0, to_pct: 0.0,  oreb: 25.0, ft_rate: 30.0 },
+    ],
+    players: [
+      { name: 'Paulius Murauskas',     number: 34, pos: 'PF', poss: 156, ppp: 1.24, share: 22.4, efg: 58.6 },
+      { name: 'Mikey Lewis',           number: 3,  pos: 'PG', poss: 134, ppp: 1.18, share: 19.2, efg: 55.1 },
+      { name: 'Joshua Dent',           number: 11, pos: 'CG', poss: 108, ppp: 1.12, share: 15.5, efg: 53.4 },
+      { name: 'Augustas Marciulionis', number: 1,  pos: 'PG', poss: 92,  ppp: 1.16, share: 13.2, efg: 54.2 },
+      { name: 'Luke Barrett',          number: 15, pos: 'SG', poss: 74,  ppp: 1.05, share: 10.6, efg: 51.0 },
+      { name: 'Cam Wilbon',            number: 22, pos: 'SF', poss: 68,  ppp: 1.14, share: 9.8,  efg: 54.5 },
+      { name: 'Jordan Ross',           number: 50, pos: 'C',  poss: 65,  ppp: 1.08, share: 9.3,  efg: 52.8 },
+    ],
+    lineups: [
+      { players: ['Marciulionis','Lewis','Dent','Wilbon','Murauskas'],   total_poss: 1240, trans_poss: 380, ppp: 1.22, efg: 57.4, to_pct: 10.8 },
+      { players: ['Lewis','Dent','Barrett','Wilbon','Murauskas'],         total_poss: 542,  trans_poss: 165, ppp: 1.20, efg: 56.1, to_pct: 11.2 },
+      { players: ['Marciulionis','Lewis','Barrett','Wilbon','Murauskas'], total_poss: 268,  trans_poss: 82,  ppp: 1.19, efg: 55.4, to_pct: 11.5 },
+      { players: ['Marciulionis','Lewis','Dent','Murauskas','Ross'],      total_poss: 418,  trans_poss: 128, ppp: 1.16, efg: 54.8, to_pct: 12.0 },
+      { players: ['Marciulionis','Barrett','Dent','Wilbon','Murauskas'],  total_poss: 312,  trans_poss: 95,  ppp: 1.14, efg: 53.6, to_pct: 12.4 },
+      { players: ['Lewis','Marciulionis','Dent','Wilbon','Ross'],         total_poss: 234,  trans_poss: 72,  ppp: 1.12, efg: 52.8, to_pct: 12.8 },
+      { players: ['Lewis','Barrett','Dent','Wilbon','Ross'],              total_poss: 285,  trans_poss: 88,  ppp: 1.08, efg: 51.4, to_pct: 13.6 },
+      { players: ['Lewis','Dent','Wilbon','Murauskas','Ross'],            total_poss: 218,  trans_poss: 67,  ppp: 1.05, efg: 50.2, to_pct: 14.1 },
+      { players: ['Marciulionis','Lewis','Wilbon','Murauskas','Ross'],    total_poss: 205,  trans_poss: 63,  ppp: 1.04, efg: 49.8, to_pct: 14.3 },
+      { players: ['Marciulionis','Dent','Barrett','Murauskas','Ross'],    total_poss: 245,  trans_poss: 75,  ppp: 0.98, efg: 47.2, to_pct: 15.2 },
+    ],
+    excluded_lineups: 14,
+  },
+
+  // ── BALL SCREEN ───────────────────────────────────────────────────────
+  onball: {
+    definition: 'Possessions featuring an on-ball screen, regardless of play call. Stats reflect the entire possession.',
+    coverages: ['All Coverages', 'Over / Drop', 'Show Up', 'Switch', 'Hedge', 'Blitz', 'Soft', 'Flat Show'],
+    cov_adj: {
+      'All Coverages': { ppp: 1.00, efg: 1.00, to_pct: 1.00 },
+      'Over / Drop':   { ppp: 1.02, efg: 1.03, to_pct: 0.96 },
+      'Show Up':       { ppp: 0.96, efg: 0.97, to_pct: 1.08 },
+      'Switch':        { ppp: 0.94, efg: 0.95, to_pct: 1.12 },
+      'Hedge':         { ppp: 0.91, efg: 0.93, to_pct: 1.18 },
+      'Blitz':         { ppp: 1.08, efg: 1.02, to_pct: 1.05 },
+      'Soft':          { ppp: 1.12, efg: 1.10, to_pct: 0.88 },
+      'Flat Show':     { ppp: 1.00, efg: 1.01, to_pct: 1.04 },
+    },
+    screens: [
+      { name: 'Side',     poss: 56, ppp: 1.18, efg: 56.5, to_pct: 12.4, oreb: 27.4, ft_rate: 24.1 },
+      { name: '46',       poss: 28, ppp: 1.05, efg: 49.8, to_pct: 14.1, oreb: 24.5, ft_rate: 22.0 },
+      { name: 'Away',     poss: 24, ppp: 1.22, efg: 58.6, to_pct: 10.5, oreb: 28.1, ft_rate: 26.5 },
+      { name: 'Get',      poss: 22, ppp: 1.14, efg: 54.5, to_pct: 12.7, oreb: 26.8, ft_rate: 24.8 },
+      { name: 'Rub',      poss: 18, ppp: 1.31, efg: 62.4, to_pct: 9.2,  oreb: 30.5, ft_rate: 27.3 },
+      { name: 'Thru',     poss: 16, ppp: 0.96, efg: 47.2, to_pct: 16.1, oreb: 23.1, ft_rate: 21.5 },
+      { name: 'Vert',     poss: 14, ppp: 1.08, efg: 52.1, to_pct: 13.5, oreb: 25.4, ft_rate: 23.2 },
+      { name: 'Strong',   poss: 12, ppp: 1.25, efg: 60.0, to_pct: 8.3,  oreb: 29.1, ft_rate: 26.0 },
+      { name: 'DBL Drag', poss: 11, ppp: 1.36, efg: 65.5, to_pct: 9.1,  oreb: 31.4, ft_rate: 28.5 },
+      { name: 'Step Up',  poss: 9,  ppp: 1.11, efg: 53.8, to_pct: 12.2, oreb: 27.0, ft_rate: 24.5 },
+      { name: 'Tandem',   poss: 8,  ppp: 1.04, efg: 51.0, to_pct: 14.7, oreb: 26.5, ft_rate: 22.8 },
+      { name: 'Duck',     poss: 8,  ppp: 0.88, efg: 44.5, to_pct: 17.3, oreb: 22.4, ft_rate: 20.1 },
+      { name: 'Wiggle',   poss: 8,  ppp: 1.42, efg: 67.8, to_pct: 7.5,  oreb: 32.1, ft_rate: 29.0 },
+    ],
+    players: [
+      { name: 'Mikey Lewis',           number: 3,  pos: 'PG', poss: 78, ppp: 1.14, share: 33.3, efg: 54.8 },
+      { name: 'Augustas Marciulionis', number: 1,  pos: 'PG', poss: 56, ppp: 1.18, share: 23.9, efg: 56.1 },
+      { name: 'Joshua Dent',           number: 11, pos: 'CG', poss: 41, ppp: 1.05, share: 17.5, efg: 51.2 },
+      { name: 'Paulius Murauskas',     number: 34, pos: 'PF', poss: 28, ppp: 1.22, share: 12.0, efg: 58.6 },
+      { name: 'Luke Barrett',          number: 15, pos: 'SG', poss: 18, ppp: 0.95, share: 7.7,  efg: 47.5 },
+      { name: 'Cam Wilbon',            number: 22, pos: 'SF', poss: 8,  ppp: 1.08, share: 3.4,  efg: 52.4 },
+      { name: 'Jordan Ross',           number: 50, pos: 'C',  poss: 5,  ppp: 1.00, share: 2.1,  efg: 50.0 },
+    ],
+    lineups: [
+      { players: ['Marciulionis','Lewis','Dent','Wilbon','Murauskas'],   total_poss: 1240, trans_poss: 124, ppp: 1.18, efg: 56.0, to_pct: 12.5 },
+      { players: ['Marciulionis','Lewis','Barrett','Wilbon','Murauskas'], total_poss: 268,  trans_poss: 28,  ppp: 1.22, efg: 58.0, to_pct: 11.4 },
+      { players: ['Lewis','Dent','Barrett','Wilbon','Murauskas'],         total_poss: 542,  trans_poss: 56,  ppp: 1.14, efg: 54.5, to_pct: 13.2 },
+      { players: ['Marciulionis','Lewis','Dent','Murauskas','Ross'],      total_poss: 418,  trans_poss: 42,  ppp: 1.10, efg: 52.8, to_pct: 13.8 },
+      { players: ['Lewis','Marciulionis','Dent','Wilbon','Ross'],         total_poss: 234,  trans_poss: 24,  ppp: 1.05, efg: 51.0, to_pct: 14.5 },
+      { players: ['Marciulionis','Barrett','Dent','Wilbon','Murauskas'],  total_poss: 312,  trans_poss: 32,  ppp: 1.08, efg: 51.8, to_pct: 14.0 },
+      { players: ['Marciulionis','Lewis','Wilbon','Murauskas','Ross'],    total_poss: 205,  trans_poss: 22,  ppp: 1.02, efg: 49.8, to_pct: 15.0 },
+      { players: ['Lewis','Dent','Wilbon','Murauskas','Ross'],            total_poss: 218,  trans_poss: 22,  ppp: 0.98, efg: 48.5, to_pct: 15.8 },
+      { players: ['Lewis','Barrett','Dent','Wilbon','Ross'],              total_poss: 285,  trans_poss: 28,  ppp: 0.96, efg: 47.5, to_pct: 16.2 },
+      { players: ['Marciulionis','Dent','Barrett','Murauskas','Ross'],    total_poss: 245,  trans_poss: 24,  ppp: 0.92, efg: 45.8, to_pct: 17.0 },
+    ],
+    excluded_lineups: 14,
+  },
+
+  // ── HALF-COURT SETS ───────────────────────────────────────────────────
+  halfcourt: {
+    definition: 'Designed half-court set plays. Filter by package to drill into a specific call group.',
+    packages: ['All Packages', '4 Out', 'AUX', 'Horns', 'Zone', '3/4 Pop Sprint', 'Jack', 'DIVE'],
+    plays: [
+      { name: '44 Side',                  package: '4 Out',          poss: 133, ppp: 1.22, efg: 56.4, to_pct: 11.8, oreb: 30.5, ft_rate: 25.2 },
+      { name: 'Hi/Low',                   package: 'AUX',            poss: 114, ppp: 1.05, efg: 51.8, to_pct: 14.0, oreb: 28.4, ft_rate: 22.1 },
+      { name: 'Zero Chin 3/4',            package: 'Zone',           poss: 109, ppp: 1.31, efg: 60.5, to_pct: 9.5,  oreb: 33.2, ft_rate: 26.5 },
+      { name: '3/4 Pop Sprint -> Thru',   package: '3/4 Pop Sprint', poss: 101, ppp: 1.18, efg: 55.6, to_pct: 12.2, oreb: 29.4, ft_rate: 24.5 },
+      { name: '44 Rub',                   package: '4 Out',          poss: 86,  ppp: 1.14, efg: 54.0, to_pct: 12.8, oreb: 28.6, ft_rate: 23.8 },
+      { name: '3/4 Pop Sprint -> Bump',   package: '3/4 Pop Sprint', poss: 63,  ppp: 1.09, efg: 52.4, to_pct: 13.4, oreb: 27.8, ft_rate: 23.0 },
+      { name: 'DBL Drag Chin 5',          package: 'Horns',          poss: 46,  ppp: 1.25, efg: 58.5, to_pct: 10.8, oreb: 31.2, ft_rate: 25.6 },
+      { name: '3/4 Pop Sprint -> Away',   package: '3/4 Pop Sprint', poss: 32,  ppp: 1.16, efg: 55.0, to_pct: 12.5, oreb: 28.9, ft_rate: 24.2 },
+      { name: '4( ) Middle',              package: '4 Out',          poss: 27,  ppp: 1.04, efg: 50.8, to_pct: 14.2, oreb: 27.4, ft_rate: 22.5 },
+      { name: 'H Twirl 4/5',              package: 'Horns',          poss: 24,  ppp: 1.20, efg: 57.2, to_pct: 11.5, oreb: 30.1, ft_rate: 25.0 },
+      { name: 'H Get',                    package: 'Horns',          poss: 19,  ppp: 1.08, efg: 52.6, to_pct: 13.0, oreb: 28.2, ft_rate: 23.5 },
+      { name: 'H Pop -> 46',              package: 'Horns',          poss: 16,  ppp: 1.13, efg: 54.4, to_pct: 12.6, oreb: 28.8, ft_rate: 24.0 },
+      { name: 'Circle Jack 5S -> 4H 46',  package: 'Jack',           poss: 15,  ppp: 1.34, efg: 62.8, to_pct: 8.7,  oreb: 32.5, ft_rate: 27.0 },
+      { name: 'H Away',                   package: 'Horns',          poss: 14,  ppp: 1.02, efg: 50.2, to_pct: 14.6, oreb: 27.1, ft_rate: 22.0 },
+      { name: 'Dive Thru',                package: 'DIVE',           poss: 13,  ppp: 1.18, efg: 56.0, to_pct: 12.0, oreb: 29.2, ft_rate: 24.8 },
+      { name: 'H Pop Clear',              package: 'Horns',          poss: 12,  ppp: 1.06, efg: 51.5, to_pct: 13.8, oreb: 27.6, ft_rate: 22.8 },
+      { name: '45 Cir Flare 1',           package: '4 Out',          poss: 11,  ppp: 1.28, efg: 60.0, to_pct: 9.9,  oreb: 31.5, ft_rate: 26.2 },
+    ],
+    players: [
+      { name: 'Mikey Lewis',           number: 3,  pos: 'PG', poss: 198, ppp: 1.16, share: 21.6, efg: 54.8 },
+      { name: 'Paulius Murauskas',     number: 34, pos: 'PF', poss: 175, ppp: 1.20, share: 19.1, efg: 57.2 },
+      { name: 'Augustas Marciulionis', number: 1,  pos: 'PG', poss: 152, ppp: 1.18, share: 16.6, efg: 55.4 },
+      { name: 'Joshua Dent',           number: 11, pos: 'CG', poss: 128, ppp: 1.10, share: 14.0, efg: 52.6 },
+      { name: 'Cam Wilbon',            number: 22, pos: 'SF', poss: 94,  ppp: 1.14, share: 10.3, efg: 54.0 },
+      { name: 'Luke Barrett',          number: 15, pos: 'SG', poss: 88,  ppp: 1.08, share: 9.6,  efg: 52.0 },
+      { name: 'Jordan Ross',           number: 50, pos: 'C',  poss: 82,  ppp: 1.12, share: 8.9,  efg: 53.5 },
+    ],
+    lineups: [
+      { players: ['Marciulionis','Lewis','Dent','Wilbon','Murauskas'],   total_poss: 1240, trans_poss: 432, ppp: 1.20, efg: 56.5, to_pct: 11.8 },
+      { players: ['Lewis','Dent','Barrett','Wilbon','Murauskas'],         total_poss: 542,  trans_poss: 196, ppp: 1.18, efg: 55.4, to_pct: 12.2 },
+      { players: ['Marciulionis','Lewis','Barrett','Wilbon','Murauskas'], total_poss: 268,  trans_poss: 95,  ppp: 1.16, efg: 54.8, to_pct: 12.4 },
+      { players: ['Marciulionis','Lewis','Dent','Murauskas','Ross'],      total_poss: 418,  trans_poss: 152, ppp: 1.15, efg: 54.2, to_pct: 12.5 },
+      { players: ['Marciulionis','Barrett','Dent','Wilbon','Murauskas'],  total_poss: 312,  trans_poss: 112, ppp: 1.14, efg: 53.8, to_pct: 12.8 },
+      { players: ['Lewis','Marciulionis','Dent','Wilbon','Ross'],         total_poss: 234,  trans_poss: 86,  ppp: 1.12, efg: 53.2, to_pct: 13.0 },
+      { players: ['Lewis','Barrett','Dent','Wilbon','Ross'],              total_poss: 285,  trans_poss: 102, ppp: 1.08, efg: 51.6, to_pct: 13.5 },
+      { players: ['Marciulionis','Lewis','Wilbon','Murauskas','Ross'],    total_poss: 205,  trans_poss: 75,  ppp: 1.06, efg: 51.0, to_pct: 13.8 },
+      { players: ['Lewis','Dent','Wilbon','Murauskas','Ross'],            total_poss: 218,  trans_poss: 78,  ppp: 1.04, efg: 50.4, to_pct: 14.0 },
+      { players: ['Marciulionis','Dent','Barrett','Murauskas','Ross'],    total_poss: 245,  trans_poss: 88,  ppp: 1.00, efg: 48.8, to_pct: 14.8 },
+    ],
+    excluded_lineups: 14,
+  },
+
+  // ── UNDERNEATH OUT OF BOUNDS ──────────────────────────────────────────
+  uob: {
+    definition: 'Plays inbounded from beneath the rim. Designed actions for scoring or quick restarts.',
+    plays: [
+      { name: 'Box Slip',     poss: 56, ppp: 1.24, efg: 58.1, to_pct: 14.2, oreb: 22.5, ft_rate: 28.1 },
+      { name: 'Stack High',   poss: 42, ppp: 1.18, efg: 56.0, to_pct: 15.4, oreb: 24.2, ft_rate: 26.5 },
+      { name: 'Box Flare',    poss: 32, ppp: 1.12, efg: 53.5, to_pct: 16.5, oreb: 22.4, ft_rate: 25.0 },
+      { name: 'Line',         poss: 28, ppp: 1.05, efg: 50.4, to_pct: 18.2, oreb: 21.5, ft_rate: 23.8 },
+      { name: 'Wedge',        poss: 22, ppp: 1.32, efg: 62.0, to_pct: 12.5, oreb: 25.0, ft_rate: 30.0 },
+      { name: 'Quick Slip',   poss: 18, ppp: 1.15, efg: 55.2, to_pct: 15.8, oreb: 22.0, ft_rate: 26.8 },
+      { name: 'Cross Screen', poss: 14, ppp: 1.08, efg: 52.1, to_pct: 17.5, oreb: 21.5, ft_rate: 25.5 },
+      { name: 'Zipper',       poss: 11, ppp: 1.02, efg: 49.0, to_pct: 18.5, oreb: 20.5, ft_rate: 24.2 },
+    ],
+    players: [
+      { name: 'Paulius Murauskas',     number: 34, pos: 'PF', poss: 58, ppp: 1.22, share: 26.0, efg: 58.6 },
+      { name: 'Mikey Lewis',           number: 3,  pos: 'PG', poss: 42, ppp: 1.18, share: 18.8, efg: 56.0 },
+      { name: 'Augustas Marciulionis', number: 1,  pos: 'PG', poss: 34, ppp: 1.14, share: 15.2, efg: 54.5 },
+      { name: 'Joshua Dent',           number: 11, pos: 'CG', poss: 32, ppp: 1.08, share: 14.3, efg: 52.4 },
+      { name: 'Cam Wilbon',            number: 22, pos: 'SF', poss: 22, ppp: 1.16, share: 9.9,  efg: 55.0 },
+      { name: 'Jordan Ross',           number: 50, pos: 'C',  poss: 20, ppp: 1.10, share: 9.0,  efg: 53.0 },
+      { name: 'Luke Barrett',          number: 15, pos: 'SG', poss: 15, ppp: 0.98, share: 6.7,  efg: 49.5 },
+    ],
+    lineups: [
+      { players: ['Marciulionis','Lewis','Dent','Wilbon','Murauskas'],   total_poss: 1240, trans_poss: 102, ppp: 1.20, efg: 56.5, to_pct: 14.5 },
+      { players: ['Lewis','Dent','Barrett','Wilbon','Murauskas'],         total_poss: 542,  trans_poss: 44,  ppp: 1.18, efg: 55.8, to_pct: 14.8 },
+      { players: ['Marciulionis','Lewis','Barrett','Wilbon','Murauskas'], total_poss: 268,  trans_poss: 22,  ppp: 1.15, efg: 54.6, to_pct: 15.1 },
+      { players: ['Marciulionis','Lewis','Dent','Murauskas','Ross'],      total_poss: 418,  trans_poss: 34,  ppp: 1.14, efg: 54.0, to_pct: 15.3 },
+      { players: ['Marciulionis','Barrett','Dent','Wilbon','Murauskas'],  total_poss: 312,  trans_poss: 25,  ppp: 1.12, efg: 53.2, to_pct: 15.5 },
+      { players: ['Lewis','Marciulionis','Dent','Wilbon','Ross'],         total_poss: 234,  trans_poss: 19,  ppp: 1.10, efg: 52.4, to_pct: 15.8 },
+      { players: ['Lewis','Barrett','Dent','Wilbon','Ross'],              total_poss: 285,  trans_poss: 23,  ppp: 1.06, efg: 50.8, to_pct: 16.5 },
+      { players: ['Marciulionis','Lewis','Wilbon','Murauskas','Ross'],    total_poss: 205,  trans_poss: 17,  ppp: 1.04, efg: 50.2, to_pct: 16.8 },
+      { players: ['Lewis','Dent','Wilbon','Murauskas','Ross'],            total_poss: 218,  trans_poss: 18,  ppp: 1.02, efg: 49.6, to_pct: 17.0 },
+      { players: ['Marciulionis','Dent','Barrett','Murauskas','Ross'],    total_poss: 245,  trans_poss: 20,  ppp: 0.98, efg: 48.0, to_pct: 17.5 },
+    ],
+    excluded_lineups: 14,
+  },
+};
+
+// Tier helper used by all variants
+function tierColor(metric, value) {
+  // Returns 'good' | 'mid' | 'low' for a Four Factors metric
+  const ranges = {
+    ppp:     { good: 1.10, mid: 0.95 },
+    efg:     { good: 54,   mid: 48   },
+    to_pct:  { good: 13,   mid: 16, invert: true },  // lower is better
+    oreb:    { good: 30,   mid: 25   },
+    ft_rate: { good: 28,   mid: 20   },
+  };
+  const r = ranges[metric];
+  if (!r) return 'mid';
+  if (r.invert) {
+    if (value <= r.good) return 'good';
+    if (value <= r.mid)  return 'mid';
+    return 'low';
+  }
+  if (value >= r.good) return 'good';
+  if (value >= r.mid)  return 'mid';
+  return 'low';
+}

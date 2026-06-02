@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMC Offense — Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #06224C;
+    --navy-2:  #0A2E66;
+    --navy-3:  #133A7A;
+    --red:     #C8102E;
+    --red-2:   #E11D48;
+    --silver:  #A2AAAD;
+    --bg:      #F5F6F8;
+    --surface: #FFFFFF;
+    --line:    #E5E7EB;
+    --text:    #111827;
+    --muted:   #6B7280;
+    --good:    #0DBC79;
+    --good-bg: #ECFDF5;
+    --mid:     #F59E0B;
+    --mid-bg:  #FFFBEB;
+    --low:     #DC2626;
+    --low-bg:  #FEF2F2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; }
+  body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* ── topbar ── */
+  nav.topbar {
+    height: 52px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { height: 30px; }
+  .brand-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .brand-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .nav-right { margin-left: auto; display: flex; gap: 28px; align-items: center; }
+  .nav-link { font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 500; }
+  .nav-link.active { color: var(--navy); font-weight: 600; }
+  .nav-link:hover { color: var(--text); }
+
+  main { max-width: 1400px; margin: 0 auto; padding: 14px 28px 36px; }
+
+  /* ── hero block ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+    border-radius: 14px;
+    padding: 16px 24px;
+    color: #fff;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -80px; top: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(200,16,46,.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-left .eyebrow {
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .hero-left h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .hero-left .sub { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.4; }
+  .hero-record {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .record-block { text-align: right; }
+  .record-block .v { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .record-block .l { font-size: 9px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; font-weight: 600; }
+  .record-block.red .v { color: #FF7B8E; }
+
+  /* ── timeline (now at top) ── */
+  .timeline {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 10px 18px 10px;
+    margin-bottom: 10px;
+  }
+  .tl-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .tl-title { font-size: 12px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+  .tl-meta { font-size: 11px; color: var(--muted); }
+
+  /* circular game chips (full width) */
+  .chip-row {
+    display: grid;
+    grid-template-columns: repeat(33, 1fr);
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .chip {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: transform .12s, background .12s, border-color .12s, color .12s;
+    user-select: none;
+  }
+  .chip:hover { transform: scale(1.12); border-color: var(--navy); z-index: 2; }
+  .chip.win.selected  { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .chip.loss.selected { background: var(--red);  border-color: var(--red);  color: #fff; }
+  .chip.win:not(.selected)  { border-color: rgba(6,34,76,0.25); }
+  .chip.loss:not(.selected) { border-color: rgba(200,16,46,0.35); }
+  .chip-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s;
+    z-index: 5;
+  }
+  .chip:hover .chip-tooltip { opacity: 1; }
+  .chip-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -4px;
+    border: 4px solid transparent;
+    border-top-color: var(--navy);
+  }
+
+  /* month band beneath chips */
+  .month-band {
+    display: grid;
+    grid-template-columns: repeat(33, 1fr);
+    gap: 6px;
+    font-size: 9px;
+    color: var(--silver);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+  .month-band > div { font-weight: 600; }
+  .month-band > div:not(.first) { color: transparent; }
+
+  /* filter pills */
+  .filter-section {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .tl-pill {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    transition: .12s;
+  }
+  .tl-pill:hover { color: var(--navy); border-color: var(--navy); }
+  .tl-pill.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .tl-pill.divider {
+    background: transparent;
+    border: none;
+    color: var(--silver);
+    cursor: default;
+    padding: 5px 4px;
+  }
+  .clear-link {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: color .12s, text-decoration-color .12s;
+    user-select: none;
+  }
+  .clear-link:hover {
+    color: var(--red);
+    text-decoration-color: var(--red);
+  }
+
+  /* chat panel (under cards) */
+  .chat-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 18px 10px;
+    margin-top: 10px;
+  }
+  .chat-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .chat-hint {
+    margin-top: 6px;
+    font-size: 10px;
+    color: var(--silver);
+    padding-left: 40px;
+  }
+  .chat-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), var(--red));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .chat-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    transition: border-color .15s, background .15s;
+  }
+  .chat-input::placeholder { color: var(--muted); }
+  .chat-input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(6,34,76,0.08);
+  }
+  .chat-send {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background .12s;
+  }
+  .chat-send:hover { background: var(--navy-2); }
+
+  /* ── 5 portrait cards ── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    transition: opacity .22s ease;
+  }
+  .section-header h2 { font-size: 16px; font-weight: 700; color: var(--navy); letter-spacing: -0.015em; }
+  .section-header .meta { font-size: 11px; color: var(--muted); }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 18px 16px;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 290px;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(6,34,76,0.08), 0 4px 8px rgba(6,34,76,0.04);
+    border-color: var(--navy);
+  }
+  .card-tier {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .card-tier.good { background: var(--good); }
+  .card-tier.mid  { background: var(--mid); }
+  .card-tier.low  { background: var(--low); }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    margin-top: 4px;
+    margin-bottom: 3px;
+  }
+  .card-poss {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  /* leading PPP block */
+  .card-ppp-block {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+    margin-bottom: 12px;
+  }
+  .card-ppp {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--navy);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .card-ppp-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  /* four factors stacked rows */
+  .card-factors {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .ff-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+  .ff-label {
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 11px;
+  }
+  .ff-value {
+    font-weight: 700;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .ff-value.good { color: var(--good); }
+  .ff-value.mid  { color: var(--mid); }
+  .ff-value.low  { color: var(--low); }
+
+  /* foot of card */
+  .card-foot {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .card-foot .arrow {
+    color: var(--silver);
+    font-weight: 600;
+    transition: color .15s, transform .15s;
+  }
+  .card:hover .arrow { color: var(--red); transform: translateX(3px); }
+
+  .footer-note {
+    margin-top: 32px;
+    font-size: 11px;
+    color: var(--silver);
+    text-align: center;
+  }
+
+  /* ── detail view (in-place expansion with animation) ── */
+  .swap-slot { position: relative; }
+  .swap-fade {
+    transition: opacity .26s cubic-bezier(.4,0,.2,1), transform .32s cubic-bezier(.4,0,.2,1);
+    transform-origin: center center;
+    will-change: opacity, transform;
+  }
+  .swap-fade.hidden {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+  }
+  /* Cards leaving */
+  .cards.collapsing {
+    opacity: 0;
+    transform: scale(0.94);
+    pointer-events: none;
+  }
+  /* Detail entering: starts compact (origin point set inline via JS), grows to fill */
+  .detail-view {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .detail-view.entering {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  /* Detail leaving (reverse) */
+  .detail-view.leaving {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+
+  /* Hero text crossfade */
+  .hero-text-stack { position: relative; }
+  .hero-text-pane {
+    transition: opacity .24s ease, transform .26s cubic-bezier(.4,0,.2,1);
+  }
+  .hero-text-pane.fading {
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+  }
+
+  .detail-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .detail-back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-family: inherit;
+  }
+  .detail-back:hover { color: var(--navy); background: var(--surface); }
+  .detail-back .arrow {
+    transition: transform .12s;
+    font-weight: 600;
+  }
+  .detail-back:hover .arrow { transform: translateX(-3px); }
+  .detail-crumb {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .detail-crumb b { color: var(--navy); }
+
+  /* four factors strip (scoped to detail) */
+  .detail-factors {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .df-cell {
+    padding: 16px 18px;
+    border-right: 1px solid var(--line);
+    text-align: center;
+  }
+  .df-cell:last-child { border-right: none; }
+  .df-cell .v { font-size: 20px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .df-cell .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; font-weight: 600; }
+
+  /* filter row above section head (onball + halfcourt) */
+  .detail-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    padding: 14px 22px 0;
+  }
+  .detail-filter-row .filter-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--muted);
+    margin-right: 6px;
+  }
+  /* reuse .tl-pill styles already defined for filter pills */
+
+  /* package tag inside HC plays table */
+  .pkg-tag {
+    display: inline-block;
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* section subheaders inside detail */
+  .detail-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 22px 22px 12px;
+    border-top: 1px solid var(--line);
+  }
+  .detail-section-head:first-of-type { border-top: none; }
+  .dsh-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+  }
+  .dsh-meta {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+
+  /* player portrait cards */
+  .players-row {
+    padding: 4px 22px 22px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+  }
+  .player-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 12px 12px;
+    text-align: center;
+    position: relative;
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+    cursor: pointer;
+  }
+  .player-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--navy);
+    box-shadow: 0 6px 16px rgba(6,34,76,0.08);
+  }
+  .player-rank {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--silver);
+    font-variant-numeric: tabular-nums;
+  }
+  .player-rank.top { color: var(--red); }
+  .player-photo {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    margin: 6px auto 10px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    border: 2px solid var(--surface);
+    box-shadow: 0 2px 6px rgba(6,34,76,0.12);
+  }
+  .player-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-meta {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .player-meta .num { color: var(--red); font-weight: 700; }
+  .player-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .player-stat {
+    text-align: center;
+  }
+  .player-stat .pv {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .player-stat .pl {
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 3px;
+    font-weight: 600;
+  }
+
+  /* ── lineup analysis ── */
+  .lineups-wrap {
+    padding: 0 22px 22px;
+  }
+  .lineups-headbar {
+    display: grid;
+    grid-template-columns: 32px auto minmax(0, 1fr) 80px 70px 110px 60px 60px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 10px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px 8px 0 0;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .lineups-headbar > .num { text-align: right; }
+  .lineups-scroll {
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid var(--line);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+  }
+  .lineups-scroll::-webkit-scrollbar { width: 6px; }
+  .lineups-scroll::-webkit-scrollbar-track { background: transparent; }
+  .lineups-scroll::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 3px;
+  }
+  .lineups-scroll::-webkit-scrollbar-thumb:hover { background: var(--silver); }
+
+  .lineup-row {
+    display: grid;
+    grid-template-columns: 32px auto minmax(0, 1fr) 80px 70px 110px 60px 60px;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    transition: background .1s;
+  }
+  .lineup-row:hover { background: var(--bg); }
+  .lineup-row:last-child { border-bottom: none; }
+  .lineup-row .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .lineup-rank {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+  .lineup-rank.top { color: var(--red); }
+
+  .lineup-avs {
+    display: flex;
+    gap: -4px;
+  }
+  .lineup-av {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    border: 2px solid var(--surface);
+    margin-left: -6px;
+    flex-shrink: 0;
+  }
+  .lineup-av:first-child { margin-left: 0; }
+
+  .lineup-names {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lineup-names .sep {
+    color: var(--silver);
+    margin: 0 5px;
+  }
+
+  .lineup-ppp-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  .lineup-ppp-num { font-weight: 700; min-width: 36px; text-align: right; color: var(--navy); }
+  .lineup-ppp-bar {
+    width: 60px;
+    height: 5px;
+    background: var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .lineup-ppp-fill { height: 100%; border-radius: 3px; }
+  .lineup-ppp-fill.good { background: var(--good); }
+  .lineup-ppp-fill.mid  { background: var(--mid); }
+  .lineup-ppp-fill.low  { background: var(--low); }
+
+  .lineup-tier-good { color: var(--good); font-weight: 600; }
+  .lineup-tier-mid  { color: var(--mid);  font-weight: 600; }
+  .lineup-tier-low  { color: var(--low);  font-weight: 600; }
+
+  .lineups-footnote {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--silver);
+    text-align: center;
+  }
+
+  /* tabs */
+  .detail-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 16px 22px 0;
+  }
+  .d-tab {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .d-tab:hover { color: var(--navy); border-color: var(--navy); }
+  .d-tab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  /* table */
+  .detail-body { padding: 16px 22px 22px; }
+  .d-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .d-table thead th {
+    text-align: left;
+    padding: 11px 14px;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .d-table thead th.num { text-align: right; }
+  .d-table thead th:hover { color: var(--text); }
+  .d-table thead th.sorted { color: var(--navy); }
+  .d-table tbody tr { border-bottom: 1px solid var(--line); transition: background .1s; }
+  .d-table tbody tr:hover { background: var(--bg); }
+  .d-table tbody tr:last-child { border-bottom: none; }
+  .d-table tbody td { padding: 13px 14px; font-variant-numeric: tabular-nums; }
+  .d-table tbody td.num { text-align: right; }
+  .d-table tbody td.label-cell { font-weight: 600; color: var(--text); }
+  .d-table tbody td.label-cell .role-tag {
+    display: inline-block;
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 8px;
+    font-weight: 500;
+  }
+
+  /* PPP cell with embedded bar */
+  .ppp-cell-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .ppp-num {
+    font-weight: 700;
+    min-width: 36px;
+    text-align: right;
+  }
+  .ppp-bar-track {
+    width: 90px;
+    height: 6px;
+    background: var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .ppp-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .ppp-bar-fill.good { background: var(--good); }
+  .ppp-bar-fill.mid  { background: var(--mid); }
+  .ppp-bar-fill.low  { background: var(--low); }
+
+  td.tier-good { color: var(--good); font-weight: 600; }
+  td.tier-mid  { color: var(--mid);  font-weight: 600; }
+  td.tier-low  { color: var(--low);  font-weight: 600; }
+
+  /* modal */
+  .modal-bg {
+    position: fixed; inset: 0; background: rgba(6,34,76,0.55);
+    backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center; z-index: 50;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--surface); padding: 36px 44px; border-radius: 14px;
+    max-width: 480px; text-align: center; border: 1px solid var(--line);
+  }
+  .modal h3 { color: var(--navy); font-size: 22px; margin-bottom: 12px; letter-spacing: -0.02em; }
+  .modal p  { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .modal-close {
+    margin-top: 24px; background: var(--navy); color: #fff; border: none;
+    padding: 10px 24px; border-radius: 8px; font-weight: 500; font-size: 13px;
+  }
+
+  /* responsive — keep cards in a row but allow tightening */
+  @media (max-width: 1280px) {
+    .card-ppp { font-size: 36px; }
+  }
+  @media (max-width: 1100px) {
+    .cards { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="brand">
+    <img src="_shared/smc_logo.png" alt="SMC">
+    <div>
+      <div class="brand-name">Saint Mary's · Offense</div>
+      <div class="brand-sub">Coach's Dashboard</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a class="nav-link active" href="#">Overview</a>
+    <a class="nav-link" href="#">Players</a>
+    <a class="nav-link" href="#">Opponents</a>
+    <a class="nav-link" href="#">Film</a>
+    <a class="nav-link" href="index.html">← Variants</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-left hero-text-stack">
+        <div class="hero-text-pane" id="hero-pane">
+          <div class="eyebrow" id="hero-eyebrow">— Season Overview</div>
+          <h1 id="hero-title">2025–26 Season</h1>
+          <div class="sub" id="hero-sub">—</div>
+        </div>
+      </div>
+      <div class="hero-record">
+        <div class="record-block">
+          <div class="v" id="rec">—</div>
+          <div class="l">Record</div>
+        </div>
+        <div class="record-block red">
+          <div class="v" id="ppp-big">—</div>
+          <div class="l">Off PPP</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE — moved to top -->
+  <section class="timeline">
+    <div class="tl-head">
+      <div class="tl-title">Season Timeline</div>
+      <div class="tl-meta" id="tl-meta">All 33 games selected</div>
+    </div>
+
+    <div class="chip-row" id="chip-row"></div>
+    <div class="month-band" id="month-band"></div>
+
+    <div class="filter-section">
+      <span class="filter-label">Filter</span>
+      <button class="tl-pill active" data-f="all">All</button>
+      <button class="tl-pill" data-f="wins">Wins</button>
+      <button class="tl-pill" data-f="losses">Losses</button>
+      <button class="tl-pill" data-f="conf">WCC</button>
+      <button class="tl-pill" data-f="nonconf">Non-Conf</button>
+      <button class="tl-pill" data-f="postseason">Postseason</button>
+      <span class="tl-pill divider">·</span>
+      <button class="tl-pill" data-f="m11">November</button>
+      <button class="tl-pill" data-f="m12">December</button>
+      <button class="tl-pill" data-f="m01">January</button>
+      <button class="tl-pill" data-f="m02">February</button>
+      <button class="tl-pill" data-f="m03">March</button>
+      <a class="clear-link" id="clear-link">Clear</a>
+    </div>
+
+  </section>
+
+  <!-- SECTION CARDS / DETAIL SWAP SLOT -->
+  <div class="section-header" id="cards-header">
+    <h2>Offensive Segments</h2>
+    <div class="meta">5 segments · click any card to drill in</div>
+  </div>
+  <div class="swap-slot">
+    <div class="cards swap-fade" id="cards"></div>
+    <div class="detail-view swap-fade hidden" id="detail-view"></div>
+  </div>
+
+  <!-- CHAT — moved underneath cards, in its own panel -->
+  <section class="chat-panel">
+    <div class="chat-row">
+      <div class="chat-icon">⚡</div>
+      <input class="chat-input" type="text" placeholder="Ask an offensive coaching question — e.g. 'How did we score against zone in conference play?'">
+      <button class="chat-send">Ask</button>
+    </div>
+    <div class="chat-hint">Placeholder · this will tap film data, play calls, and KenPom context to answer coaching questions in plain English.</div>
+  </section>
+
+  <div class="footer-note">Mock data · Design prototype · Variant B — Card Grid</div>
+</main>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="m-title">Section Detail</h3>
+    <p>Drill-down panel coming next iteration — breakdowns by action, coverage, play call, plus video timestamps and per-game tables.</p>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">Close</button>
+  </div>
+</div>
+
+<script src="_shared/mock_data.js"></script>
+<script>
+  // hero
+  document.getElementById('hero-eyebrow').textContent = `${MOCK.season.year} · ${MOCK.season.conference}`;
+  document.getElementById('hero-title').textContent   = MOCK.season.team;
+  document.getElementById('hero-sub').innerHTML =
+    `Across ${MOCK.season.games} games, the offense generated <strong style="color:#fff">${MOCK.overall.total_poss.toLocaleString()}</strong> possessions, averaging <strong style="color:#fff">${MOCK.overall.ppg}</strong> PPG with a <strong style="color:#fff">+${MOCK.overall.margin}</strong> margin.`;
+  document.getElementById('rec').textContent     = MOCK.season.record;
+  document.getElementById('ppp-big').textContent = MOCK.overall.ppp.toFixed(2);
+
+  // ── timeline circular chips
+  const chipRow = document.getElementById('chip-row');
+  chipRow.innerHTML = MOCK.games.map(g =>
+    `<div class="chip ${g.result==='W'?'win':'loss'} selected"
+          data-num="${g.num}"
+          data-result="${g.result}"
+          data-conf="${g.conf}"
+          data-month="${g.date.split('/')[0]}"
+          data-post="${g.postseason || ''}">
+       ${g.num}
+       <div class="chip-tooltip">G${g.num} · ${g.date} · ${g.opp}<br>${g.result} ${g.smc}–${g.opp_score}</div>
+     </div>`
+  ).join('');
+
+  // month band — only first game of each month gets a label
+  const monthNames = { '11':'Nov', '12':'Dec', '01':'Jan', '02':'Feb', '03':'Mar' };
+  let lastMonth = null;
+  const monthHTML = MOCK.games.map(g => {
+    const m = g.date.split('/')[0];
+    if (m !== lastMonth) { lastMonth = m; return `<div class="first">${monthNames[m] || m}</div>`; }
+    return `<div></div>`;
+  }).join('');
+  document.getElementById('month-band').innerHTML = monthHTML;
+
+  let selected = new Set(MOCK.games.map(g => g.num));
+  let lastClicked = null;
+  chipRow.querySelectorAll('.chip').forEach(el => {
+    el.addEventListener('click', e => {
+      const n = +el.dataset.num;
+      if (e.shiftKey && lastClicked !== null) {
+        const a = Math.min(lastClicked, n), b = Math.max(lastClicked, n);
+        for (let i = a; i <= b; i++) selected.add(i);
+      } else {
+        selected.has(n) ? selected.delete(n) : selected.add(n);
+        lastClicked = n;
+      }
+      clearActiveFilter();
+      refreshChips();
+    });
+  });
+  function refreshChips() {
+    chipRow.querySelectorAll('.chip').forEach(el => {
+      el.classList.toggle('selected', selected.has(+el.dataset.num));
+    });
+    document.getElementById('tl-meta').textContent =
+      selected.size === MOCK.games.length ? `All ${MOCK.games.length} games selected` :
+      selected.size === 0 ? `No games selected` :
+      `${selected.size} of ${MOCK.games.length} games selected`;
+    renderCards();
+  }
+  function clearActiveFilter() {
+    document.querySelectorAll('.tl-pill[data-f]').forEach(b => b.classList.remove('active'));
+  }
+  document.getElementById('clear-link').addEventListener('click', () => {
+    clearActiveFilter();
+    selected = new Set();
+    refreshChips();
+  });
+
+  document.querySelectorAll('.tl-pill[data-f]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tl-pill[data-f]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.f;
+      selected = new Set(MOCK.games.filter(g => {
+        const m = g.date.split('/')[0];
+        if (f === 'all') return true;
+        if (f === 'wins') return g.result === 'W';
+        if (f === 'losses') return g.result === 'L';
+        if (f === 'conf') return g.conf;
+        if (f === 'nonconf') return !g.conf && !g.postseason;
+        if (f === 'postseason') return !!g.postseason;
+        if (f.startsWith('m')) return m === f.slice(1);
+        return true;
+      }).map(g => g.num));
+      refreshChips();
+    });
+  });
+
+  // ── 5 portrait cards
+  function renderCards() {
+    const sorted = [...MOCK.sections]; // keep mock order (sort by rank if desired)
+    document.getElementById('cards').innerHTML = sorted.map(s => {
+      const pppTier = tierColor('ppp', s.ppp);
+      return `
+      <div class="card" data-key="${s.key}" onclick="openDetail('${s.key}','${s.title}', this)">
+        <div class="card-tier ${pppTier}"></div>
+        <div class="card-title">${s.title}</div>
+        <div class="card-poss">${s.poss.toLocaleString()} possessions</div>
+
+        <div class="card-ppp-block">
+          <div class="card-ppp">${s.ppp.toFixed(2)}</div>
+          <div class="card-ppp-label">PPP</div>
+        </div>
+
+        <div class="card-factors">
+          <div class="ff-row">
+            <span class="ff-label">eFG%</span>
+            <span class="ff-value ${tierColor('efg',s.efg)}">${s.efg}%</span>
+          </div>
+          <div class="ff-row">
+            <span class="ff-label">TO%</span>
+            <span class="ff-value ${tierColor('to_pct',s.to_pct)}">${s.to_pct}%</span>
+          </div>
+          <div class="ff-row">
+            <span class="ff-label">OREB%</span>
+            <span class="ff-value ${tierColor('oreb',s.oreb)}">${s.oreb}%</span>
+          </div>
+          <div class="ff-row">
+            <span class="ff-label">FT Rate</span>
+            <span class="ff-value ${tierColor('ft_rate',s.ft_rate)}">${s.ft_rate}%</span>
+          </div>
+        </div>
+
+        <div class="card-foot">
+          <span>Top: <b style="color:var(--navy)">${s.top_action}</b></span>
+          <span class="arrow">→</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // chat input → placeholder modal
+  document.querySelector('.chat-send').addEventListener('click', sendChat);
+  document.querySelector('.chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendChat();
+  });
+  function sendChat() {
+    const q = document.querySelector('.chat-input').value.trim();
+    if (!q) return;
+    document.getElementById('m-title').textContent = 'Coaching Assistant';
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function openDetail(key, title, sourceCard) {
+    if (MOCK.detail[key]) {
+      openSegmentDetail(key, sourceCard);
+      return;
+    }
+    document.getElementById('m-title').textContent = title;
+    document.getElementById('modal').classList.add('open');
+  }
+
+  // ── Segment in-place detail view (with expand/reverse animation) ─────
+  let detailSortState = { col: 'poss', dir: -1 };
+  let isAnimating = false;
+  let activeSegment = null;
+  let onballFilter = 'All Coverages';
+  let hcFilter     = 'All Packages';
+
+  // Per-segment hero copy
+  const SEGMENT_LABELS = {
+    transition: 'Transition',
+    early:      'Early / Motion',
+    onball:     'Ball Screen',
+    halfcourt:  'Half-Court Sets',
+    uob:        'Underneath OB',
+  };
+  const SEGMENT_FIRST_LAYER_LABEL = {
+    transition: { title: 'By Trigger',     meta: n => `${n} trigger types` },
+    early:      { title: 'By Early Action', meta: n => `${n} action types` },
+    onball:     { title: 'By Screen Type', meta: n => `${n} screens` },
+    halfcourt:  { title: 'By Play Call',    meta: n => `${n} plays` },
+    uob:        { title: 'By Play Call',    meta: n => `${n} OB plays` },
+  };
+
+  // store original hero copy so we can restore on close
+  const HERO_OVERVIEW = {
+    eyebrow: `${MOCK.season.year} · ${MOCK.season.conference}`,
+    title:   MOCK.season.team,
+    sub:     `Across ${MOCK.season.games} games, the offense generated <strong style="color:#fff">${MOCK.overall.total_poss.toLocaleString()}</strong> possessions, averaging <strong style="color:#fff">${MOCK.overall.ppg}</strong> PPG with a <strong style="color:#fff">+${MOCK.overall.margin}</strong> margin.`
+  };
+
+  function swapHeroText(eyebrow, title, sub) {
+    const pane = document.getElementById('hero-pane');
+    pane.classList.add('fading');
+    setTimeout(() => {
+      document.getElementById('hero-eyebrow').textContent = eyebrow;
+      document.getElementById('hero-title').textContent   = title;
+      document.getElementById('hero-sub').innerHTML       = sub;
+      pane.classList.remove('fading');
+    }, 240);
+  }
+
+  function setTransformOrigin(targetEl, originEl) {
+    // Compute click origin (the source card center) relative to the targetEl
+    const t = targetEl.getBoundingClientRect();
+    const o = originEl.getBoundingClientRect();
+    const ox = ((o.left + o.width  / 2) - t.left) / t.width  * 100;
+    const oy = ((o.top  + o.height / 2) - t.top)  / t.height * 100;
+    targetEl.style.transformOrigin = `${ox.toFixed(1)}% ${oy.toFixed(1)}%`;
+  }
+
+  function openSegmentDetail(key, sourceCard) {
+    if (isAnimating) return;
+    isAnimating = true;
+    activeSegment = key;
+    detailSortState = { col: 'poss', dir: -1 };
+    onballFilter = 'All Coverages';
+    hcFilter     = 'All Packages';
+
+    const cardsEl  = document.getElementById('cards');
+    const detailEl = document.getElementById('detail-view');
+    const headerEl = document.getElementById('cards-header');
+
+    renderSegmentDetail(key);
+
+    if (sourceCard) setTransformOrigin(cardsEl, sourceCard);
+    cardsEl.classList.add('collapsing');
+
+    detailEl.classList.remove('hidden');
+    detailEl.classList.add('entering');
+    requestAnimationFrame(() => {
+      if (sourceCard) setTransformOrigin(detailEl, sourceCard);
+      requestAnimationFrame(() => {
+        detailEl.classList.remove('entering');
+      });
+    });
+
+    headerEl.style.opacity = '0';
+    headerEl.style.pointerEvents = 'none';
+
+    const s = MOCK.sections.find(x => x.key === key);
+    const d = MOCK.detail[key];
+    const label = SEGMENT_LABELS[key];
+    swapHeroText(
+      `Drill-down · ${label}`,
+      `${MOCK.season.team} — ${label}`,
+      d.definition + ` <span style="color:rgba(255,255,255,0.45)">·</span> <strong style="color:#fff">${s.poss.toLocaleString()}</strong> possessions <span style="color:rgba(255,255,255,0.45)">·</span> top action <strong style="color:#fff">${s.top_action}</strong>`
+    );
+
+    setTimeout(() => {
+      cardsEl.classList.add('hidden');
+      isAnimating = false;
+    }, 320);
+  }
+
+  function closeDetail() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    const cardsEl  = document.getElementById('cards');
+    const detailEl = document.getElementById('detail-view');
+    const headerEl = document.getElementById('cards-header');
+
+    detailEl.classList.add('leaving');
+    cardsEl.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      cardsEl.classList.remove('collapsing');
+    });
+
+    headerEl.style.opacity = '';
+    headerEl.style.pointerEvents = '';
+
+    swapHeroText(HERO_OVERVIEW.eyebrow, HERO_OVERVIEW.title, HERO_OVERVIEW.sub);
+
+    setTimeout(() => {
+      detailEl.classList.add('hidden');
+      detailEl.classList.remove('leaving');
+      isAnimating = false;
+      activeSegment = null;
+    }, 320);
+  }
+
+  function renderSegmentDetail(key) {
+    const s = MOCK.sections.find(x => x.key === key);
+    const d = MOCK.detail[key];
+    const label = SEGMENT_LABELS[key];
+    const firstLayer = SEGMENT_FIRST_LAYER_LABEL[key];
+
+    const factorsHTML = `
+      <div class="detail-factors">
+        <div class="df-cell"><div class="v">${s.ppp.toFixed(2)}</div><div class="l">PPP</div></div>
+        <div class="df-cell"><div class="v">${s.poss.toLocaleString()}</div><div class="l">Possessions</div></div>
+        <div class="df-cell"><div class="v">${s.efg}%</div><div class="l">eFG%</div></div>
+        <div class="df-cell"><div class="v">${s.to_pct}%</div><div class="l">TO%</div></div>
+        <div class="df-cell"><div class="v">${s.oreb}%</div><div class="l">OREB%</div></div>
+        <div class="df-cell"><div class="v">${s.ft_rate}%</div><div class="l">FT Rate</div></div>
+      </div>`;
+
+    // First-layer items (varies per segment) + optional filter row
+    let filterHTML = '';
+    let firstLayerHTML = '';
+    let firstLayerCount = 0;
+
+    if (key === 'transition') {
+      firstLayerCount = d.triggers.length;
+      firstLayerHTML = renderTriggerTable(d.triggers, 'Trigger');
+    } else if (key === 'early') {
+      firstLayerCount = d.actions.length;
+      firstLayerHTML = renderTriggerTable(d.actions, 'Early Action');
+    } else if (key === 'onball') {
+      filterHTML = renderFilterRow('Coverage', d.coverages, onballFilter, 'setOnballFilter');
+      const adjusted = adjustScreensByCoverage(d.screens, d.cov_adj[onballFilter]);
+      firstLayerCount = adjusted.length;
+      firstLayerHTML = renderTriggerTable(adjusted, 'Screen Type');
+    } else if (key === 'halfcourt') {
+      filterHTML = renderFilterRow('Package', d.packages, hcFilter, 'setHcFilter');
+      const filtered = hcFilter === 'All Packages'
+        ? d.plays
+        : d.plays.filter(p => p.package === hcFilter);
+      firstLayerCount = filtered.length;
+      firstLayerHTML = renderPlaysTable(filtered, hcFilter === 'All Packages');
+    } else if (key === 'uob') {
+      firstLayerCount = d.plays.length;
+      firstLayerHTML = renderTriggerTable(d.plays, 'OB Play Call');
+    }
+
+    document.getElementById('detail-view').innerHTML = `
+      <div class="detail-topbar">
+        <button class="detail-back" onclick="closeDetail()"><span class="arrow">←</span> Back to Overview</button>
+        <div class="detail-crumb">Overview · <b>${label}</b></div>
+      </div>
+      ${factorsHTML}
+      ${filterHTML}
+
+      <div class="detail-section-head">
+        <div class="dsh-title">${firstLayer.title}</div>
+        <div class="dsh-meta">${firstLayer.meta(firstLayerCount)}</div>
+      </div>
+      <div class="detail-body" style="padding-top:0">${firstLayerHTML}</div>
+
+      <div class="detail-section-head">
+        <div class="dsh-title">Top Performers</div>
+        <div class="dsh-meta">Ranked by total ${label.toLowerCase()} points</div>
+      </div>
+      ${renderPlayerCards(d.players)}
+
+      <div class="detail-section-head">
+        <div class="dsh-title">Lineup Analysis</div>
+        <div class="dsh-meta">min 200 poss together · ${d.lineups.length} of ${d.lineups.length + d.excluded_lineups} lineups</div>
+      </div>
+      ${renderLineups(d.lineups, d.excluded_lineups)}
+    `;
+  }
+
+  function renderFilterRow(labelTxt, options, active, fnName) {
+    return `<div class="detail-filter-row">
+      <span class="filter-label">${labelTxt}</span>
+      ${options.map(opt => `
+        <button class="tl-pill ${active === opt ? 'active' : ''}" onclick="${fnName}('${opt.replace(/'/g, "\\'")}')">${opt}</button>
+      `).join('')}
+    </div>`;
+  }
+
+  function setOnballFilter(cov) {
+    onballFilter = cov;
+    renderSegmentDetail('onball');
+  }
+
+  function setHcFilter(pkg) {
+    hcFilter = pkg;
+    renderSegmentDetail('halfcourt');
+  }
+
+  function adjustScreensByCoverage(screens, adj) {
+    if (!adj) return screens;
+    return screens.map(s => ({
+      ...s,
+      ppp:    +(s.ppp    * adj.ppp).toFixed(2),
+      efg:    +(s.efg    * adj.efg).toFixed(1),
+      to_pct: +(s.to_pct * adj.to_pct).toFixed(1),
+    }));
+  }
+
+  function renderPlaysTable(plays, withPackage) {
+    const rows = sortedRows(plays);
+    const maxPPP = Math.max(...plays.map(r => r.ppp));
+    return `<table class="d-table">
+      <thead><tr>
+        ${thCell('Play Call', 'name')}
+        ${withPackage ? thCell('Package', 'package') : ''}
+        ${thCell('Poss', 'poss', true)}
+        ${thCell('PPP', 'ppp', true)}
+        ${thCell('eFG%', 'efg', true)}
+        ${thCell('TO%', 'to_pct', true)}
+        ${thCell('OREB%', 'oreb', true)}
+        ${thCell('FT Rate', 'ft_rate', true)}
+      </tr></thead>
+      <tbody>
+        ${rows.map(r => `<tr>
+          <td class="label-cell">${r.name}</td>
+          ${withPackage ? `<td><span class="pkg-tag">${r.package}</span></td>` : ''}
+          <td class="num">${r.poss}</td>
+          <td class="num">${pppCell(r.ppp, maxPPP)}</td>
+          ${tierCell('efg', r.efg)}
+          ${tierCell('to_pct', r.to_pct)}
+          ${tierCell('oreb', r.oreb)}
+          ${tierCell('ft_rate', r.ft_rate)}
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+  }
+
+  function renderLineups(lineups, excluded) {
+    const ranked = [...lineups].sort((a, b) => b.ppp - a.ppp);
+    const maxPPP = Math.max(...ranked.map(r => r.ppp));
+
+    const headBar = `
+      <div class="lineups-headbar">
+        <div></div>
+        <div>Lineup</div>
+        <div></div>
+        <div class="num">Total Poss</div>
+        <div class="num">Trans Poss</div>
+        <div class="num" style="text-align:right;padding-right:8px">Trans PPP</div>
+        <div class="num">eFG%</div>
+        <div class="num">TO%</div>
+      </div>`;
+
+    const rowsHTML = ranked.map((lu, i) => {
+      const tPPP = tierColor('ppp', lu.ppp);
+      const tEFG = tierColor('efg', lu.efg);
+      const tTO  = tierColor('to_pct', lu.to_pct);
+      const widthPct = Math.min(100, (lu.ppp / maxPPP) * 100);
+      return `
+        <div class="lineup-row">
+          <div class="lineup-rank ${i < 3 ? 'top' : ''}">#${i + 1}</div>
+          <div class="lineup-avs">
+            ${lu.players.map(p => `<div class="lineup-av" title="${p}">${p[0]}</div>`).join('')}
+          </div>
+          <div class="lineup-names">${lu.players.join('<span class="sep">·</span>')}</div>
+          <div class="num" style="color:var(--muted)">${lu.total_poss.toLocaleString()}</div>
+          <div class="num">${lu.trans_poss}</div>
+          <div class="num">
+            <div class="lineup-ppp-wrap">
+              <span class="lineup-ppp-num">${lu.ppp.toFixed(2)}</span>
+              <div class="lineup-ppp-bar"><div class="lineup-ppp-fill ${tPPP}" style="width:${widthPct.toFixed(1)}%"></div></div>
+            </div>
+          </div>
+          <div class="num lineup-tier-${tEFG}">${lu.efg}%</div>
+          <div class="num lineup-tier-${tTO}">${lu.to_pct}%</div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="lineups-wrap">
+        ${headBar}
+        <div class="lineups-scroll">${rowsHTML}</div>
+        <div class="lineups-footnote">${excluded} additional lineups excluded (fewer than 200 possessions together)</div>
+      </div>`;
+  }
+
+  // helpers
+  function initialsOf(name) {
+    return name.split(' ').filter(Boolean).slice(0,2).map(s => s[0]).join('').toUpperCase();
+  }
+
+  function renderPlayerCards(players) {
+    // rank by total points generated (poss × ppp)
+    const ranked = [...players].sort((a, b) => (b.poss * b.ppp) - (a.poss * a.ppp));
+    return `<div class="players-row">
+      ${ranked.map((p, i) => `
+        <div class="player-card">
+          <div class="player-rank ${i < 3 ? 'top' : ''}">#${i + 1}</div>
+          <div class="player-photo">${initialsOf(p.name)}</div>
+          <div class="player-name">${p.name}</div>
+          <div class="player-meta"><span class="num">#${p.number}</span> · ${p.pos}</div>
+          <div class="player-stats">
+            <div class="player-stat"><div class="pv">${p.poss}</div><div class="pl">Poss</div></div>
+            <div class="player-stat"><div class="pv">${p.ppp.toFixed(2)}</div><div class="pl">PPP</div></div>
+            <div class="player-stat"><div class="pv">${p.share}%</div><div class="pl">Share</div></div>
+            <div class="player-stat"><div class="pv">${p.efg}%</div><div class="pl">eFG%</div></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+
+  function sortDetail(col) {
+    if (detailSortState.col === col) detailSortState.dir *= -1;
+    else { detailSortState.col = col; detailSortState.dir = -1; }
+    renderTransitionDetail();
+  }
+
+  function pppCell(v, maxPPP=1.8) {
+    const t = tierColor('ppp', v);
+    const widthPct = Math.min(100, (v / maxPPP) * 100);
+    return `<div class="ppp-cell-wrap">
+      <span class="ppp-num">${v.toFixed(2)}</span>
+      <div class="ppp-bar-track"><div class="ppp-bar-fill ${t}" style="width:${widthPct.toFixed(1)}%"></div></div>
+    </div>`;
+  }
+
+  function sortedRows(rows) {
+    const { col, dir } = detailSortState;
+    return [...rows].sort((a, b) => {
+      const av = a[col], bv = b[col];
+      if (typeof av === 'string') return dir * av.localeCompare(bv);
+      return dir * ((av < bv ? -1 : av > bv ? 1 : 0));
+    });
+  }
+
+  function thCell(label, key, numeric=false) {
+    const sorted = detailSortState.col === key;
+    const arrow = sorted ? (detailSortState.dir === -1 ? ' ↓' : ' ↑') : '';
+    return `<th class="${numeric?'num':''} ${sorted?'sorted':''}" onclick="sortDetail('${key}')">${label}${arrow}</th>`;
+  }
+
+  function tierCell(metric, value, suffix='%') {
+    const t = tierColor(metric, value);
+    return `<td class="num tier-${t}">${value}${suffix}</td>`;
+  }
+
+  function renderTriggerTable(triggers, firstColLabel='Trigger') {
+    const rows = sortedRows(triggers);
+    const maxPPP = Math.max(...triggers.map(r => r.ppp));
+    return `<table class="d-table">
+      <thead><tr>
+        ${thCell(firstColLabel, 'name')}
+        ${thCell('Poss', 'poss', true)}
+        ${thCell('PPP', 'ppp', true)}
+        ${thCell('eFG%', 'efg', true)}
+        ${thCell('TO%', 'to_pct', true)}
+        ${thCell('OREB%', 'oreb', true)}
+        ${thCell('FT Rate', 'ft_rate', true)}
+      </tr></thead>
+      <tbody>
+        ${rows.map(r => `<tr>
+          <td class="label-cell">${r.name}</td>
+          <td class="num">${r.poss}</td>
+          <td class="num">${pppCell(r.ppp, maxPPP)}</td>
+          ${tierCell('efg', r.efg)}
+          ${tierCell('to_pct', r.to_pct)}
+          ${tierCell('oreb', r.oreb)}
+          ${tierCell('ft_rate', r.ft_rate)}
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+  }
+
+  renderCards();
+</script>
+</body>
+</html>

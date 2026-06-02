@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMC Offense — Minimal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #06224C;
+    --navy-2:  #0A2E66;
+    --red:     #C8102E;
+    --silver:  #A2AAAD;
+    --bg:      #FAFAFA;
+    --surface: #FFFFFF;
+    --line:    #E5E7EB;
+    --line-2:  #D1D5DB;
+    --text:    #111827;
+    --muted:   #6B7280;
+    --good:    #0DBC79;
+    --mid:     #F59E0B;
+    --low:     #DC2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+  body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+  /* ── nav ── */
+  nav.topbar {
+    height: 64px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { height: 36px; }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+  .brand-name { font-size: 14px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+  .brand-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .nav-right { margin-left: auto; display: flex; gap: 32px; align-items: center; }
+  .nav-link { font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 500; }
+  .nav-link.active { color: var(--navy); }
+  .nav-link:hover { color: var(--text); }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 56px 40px 80px; }
+
+  /* ── hero ── */
+  .hero { margin-bottom: 64px; }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--navy);
+    max-width: 800px;
+  }
+  .hero h1 .accent { color: var(--red); }
+  .hero p {
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 16px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  /* ── season summary strip ── */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin: 48px 0 64px;
+  }
+  .summary-cell {
+    padding: 24px 4px;
+    border-right: 1px solid var(--line);
+  }
+  .summary-cell:last-child { border-right: none; }
+  .summary-val {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+  .summary-lbl {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── sections list ── */
+  .sections-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .sections-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.015em;
+  }
+  .sections-meta { font-size: 13px; color: var(--muted); }
+
+  .section-row {
+    display: grid;
+    grid-template-columns: 48px 1fr 80px 80px 80px 80px 80px 140px 32px;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+    cursor: pointer;
+    transition: padding .15s, background .15s;
+  }
+  .section-row:hover {
+    padding-left: 8px;
+    padding-right: 8px;
+    background: rgba(6,34,76,0.02);
+  }
+  .section-row:hover .section-arrow { transform: translateX(4px); color: var(--navy); }
+
+  .section-rank {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--silver);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .section-row:hover .section-rank { color: var(--red); }
+  .section-info { display: flex; flex-direction: column; gap: 4px; }
+  .section-name { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .section-meta { font-size: 12px; color: var(--muted); }
+  .section-meta .top-action { color: var(--navy); font-weight: 500; }
+
+  .section-stat { text-align: right; }
+  .section-stat .v { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.015em; font-variant-numeric: tabular-nums; }
+  .section-stat .l { font-size: 10px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .section-stat.good .v { color: var(--good); }
+  .section-stat.mid  .v { color: var(--mid); }
+  .section-stat.low  .v { color: var(--low); }
+  .section-stat.ppp-cell .v { font-size: 22px; color: var(--navy); }
+
+  /* sparkline */
+  .spark { width: 140px; height: 32px; }
+  .spark path.line { fill: none; stroke: var(--navy); stroke-width: 1.5; }
+  .spark path.area { fill: rgba(6,34,76,0.07); }
+
+  .section-arrow {
+    font-size: 18px;
+    color: var(--silver);
+    transition: transform .15s, color .15s;
+    text-align: right;
+  }
+
+  /* ── timeline footer ── */
+  .timeline-wrap {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .tl-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .tl-title { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .tl-meta { font-size: 12px; color: var(--muted); }
+
+  .tl-track {
+    display: grid;
+    grid-template-columns: repeat(33, 1fr);
+    gap: 4px;
+    align-items: end;
+    height: 56px;
+  }
+  .tl-game {
+    height: 100%;
+    background: var(--line);
+    border-radius: 3px 3px 0 0;
+    position: relative;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .tl-game.win  { background: var(--navy); }
+  .tl-game.loss { background: var(--red); }
+  .tl-game:hover { opacity: 0.7; }
+  .tl-game.selected { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--navy); }
+  .tl-game[data-result="L"] { background: var(--red); }
+
+  .tl-num-row {
+    display: grid;
+    grid-template-columns: repeat(33, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .tl-num-row > div:not(:nth-child(5n+1)) { visibility: hidden; }
+
+  .tl-actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 8px;
+  }
+  .tl-btn {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .tl-btn:hover { color: var(--navy); border-color: var(--navy); }
+  .tl-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  .footer-note {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--silver);
+    text-align: center;
+  }
+
+  /* simple modal placeholder */
+  .modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(6,34,76,0.5);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    padding: 40px 48px;
+    border-radius: 12px;
+    max-width: 480px;
+    text-align: center;
+    border: 1px solid var(--line);
+  }
+  .modal h3 { color: var(--navy); font-size: 22px; margin-bottom: 12px; letter-spacing: -0.02em; }
+  .modal p  { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .modal-close {
+    margin-top: 24px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="brand">
+    <img src="_shared/smc_logo.png" alt="SMC">
+    <div class="brand-text">
+      <span class="brand-name">Saint Mary's · Offense</span>
+      <span class="brand-sub">Coach's Dashboard</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a class="nav-link active" href="#">Overview</a>
+    <a class="nav-link" href="#">Players</a>
+    <a class="nav-link" href="#">Opponents</a>
+    <a class="nav-link" href="#">Film</a>
+    <a class="nav-link" href="index.html">← Variants</a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow" id="hero-eyebrow">— Season Overview</div>
+    <h1>Where the Gaels' offense lived <span class="accent">in 2025–26.</span></h1>
+    <p id="hero-copy">—</p>
+  </section>
+
+  <section class="summary" id="summary"></section>
+
+  <section>
+    <div class="sections-header">
+      <div class="sections-title">Offensive Breakdown</div>
+      <div class="sections-meta" id="sections-meta">4 segments · ranked by efficiency</div>
+    </div>
+    <div id="sections-list"></div>
+  </section>
+
+  <section class="timeline-wrap">
+    <div class="tl-header">
+      <div class="tl-title">Season Timeline</div>
+      <div class="tl-meta" id="tl-meta">Click bars to filter · Shift+click for range</div>
+    </div>
+    <div class="tl-track" id="tl-track"></div>
+    <div class="tl-num-row" id="tl-nums"></div>
+    <div class="tl-actions">
+      <button class="tl-btn active" data-f="all">All games</button>
+      <button class="tl-btn" data-f="wins">Wins only</button>
+      <button class="tl-btn" data-f="losses">Losses only</button>
+      <button class="tl-btn" data-f="conf">Conference</button>
+      <button class="tl-btn" data-f="nonconf">Non-conference</button>
+    </div>
+  </section>
+
+  <div class="footer-note">Mock data · Design prototype · Variant A — Minimal Editorial</div>
+</main>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="m-title">Section Detail</h3>
+    <p id="m-body">Deep-dive view coming in the next iteration. Click-through to see breakdown tables, video timestamps, and game-by-game performance.</p>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">Close</button>
+  </div>
+</div>
+
+<script src="_shared/mock_data.js"></script>
+<script>
+  // ── hero copy
+  const top = MOCK.sections.find(s => s.rank === 1);
+  document.getElementById('hero-copy').innerHTML =
+    `SMC averaged <strong>${MOCK.overall.ppp.toFixed(2)} points per possession</strong> across <strong>${MOCK.overall.total_poss.toLocaleString()}</strong> possessions and ${MOCK.season.games} games. The most efficient unit was <strong style="color:var(--navy)">${top.title}</strong>, generating ${top.ppp.toFixed(2)} PPP on ${top.poss.toLocaleString()} possessions.`;
+  document.getElementById('hero-eyebrow').textContent = `${MOCK.season.year} · ${MOCK.season.record} · ${MOCK.season.conference}`;
+
+  // ── summary strip
+  const summaryCells = [
+    { v: MOCK.overall.ppp.toFixed(2),   l: 'Points / Possession' },
+    { v: MOCK.overall.total_poss.toLocaleString(), l: 'Possessions' },
+    { v: MOCK.overall.efg + '%',         l: 'Effective FG%' },
+    { v: MOCK.overall.to_pct + '%',      l: 'Turnover %' },
+    { v: MOCK.overall.oreb + '%',        l: 'Off Rebound %' },
+    { v: MOCK.overall.ft_rate + '%',     l: 'FT Rate' },
+  ];
+  document.getElementById('summary').innerHTML = summaryCells.map(c =>
+    `<div class="summary-cell"><div class="summary-val">${c.v}</div><div class="summary-lbl">${c.l}</div></div>`
+  ).join('');
+
+  // ── sections list
+  function sparkSVG(points, width=140, height=32) {
+    const max = Math.max(...points), min = Math.min(...points);
+    const rng = max - min || 1;
+    const stepX = width / (points.length - 1);
+    const pts = points.map((p, i) => `${(i*stepX).toFixed(1)},${(height - ((p-min)/rng)*height).toFixed(1)}`).join(' ');
+    return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+      <polyline class="line" points="${pts}" style="fill:none;stroke:var(--navy);stroke-width:1.5"/>
+    </svg>`;
+  }
+
+  const sorted = [...MOCK.sections].sort((a,b) => a.rank - b.rank);
+  document.getElementById('sections-list').innerHTML = sorted.map(s => `
+    <div class="section-row" onclick="openDetail('${s.key}','${s.title}')">
+      <div class="section-rank">0${s.rank}</div>
+      <div class="section-info">
+        <div class="section-name">${s.title}</div>
+        <div class="section-meta">${s.poss.toLocaleString()} possessions · top action <span class="top-action">${s.top_action}</span></div>
+      </div>
+      <div class="section-stat ppp-cell ${tierColor('ppp',s.ppp)}">
+        <div class="v">${s.ppp.toFixed(2)}</div><div class="l">PPP</div>
+      </div>
+      <div class="section-stat ${tierColor('efg',s.efg)}">
+        <div class="v">${s.efg}%</div><div class="l">eFG</div>
+      </div>
+      <div class="section-stat ${tierColor('to_pct',s.to_pct)}">
+        <div class="v">${s.to_pct}%</div><div class="l">TO</div>
+      </div>
+      <div class="section-stat ${tierColor('oreb',s.oreb)}">
+        <div class="v">${s.oreb}%</div><div class="l">OREB</div>
+      </div>
+      <div class="section-stat ${tierColor('ft_rate',s.ft_rate)}">
+        <div class="v">${s.ft_rate}%</div><div class="l">FTR</div>
+      </div>
+      <div>${sparkSVG(s.trend)}</div>
+      <div class="section-arrow">→</div>
+    </div>
+  `).join('');
+
+  // ── timeline bars
+  const trackEl = document.getElementById('tl-track');
+  const numEl = document.getElementById('tl-nums');
+  trackEl.innerHTML = MOCK.games.map(g =>
+    `<div class="tl-game ${g.result==='W'?'win':'loss'} selected" data-num="${g.num}" data-result="${g.result}" data-conf="${g.conf}" title="G${g.num}: ${g.opp} (${g.result} ${g.smc}-${g.opp_score})"></div>`
+  ).join('');
+  numEl.innerHTML = MOCK.games.map(g => `<div>${g.num}</div>`).join('');
+
+  let selected = new Set(MOCK.games.map(g => g.num));
+  let lastClicked = null;
+  trackEl.querySelectorAll('.tl-game').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const n = +el.dataset.num;
+      if (e.shiftKey && lastClicked !== null) {
+        const a = Math.min(lastClicked, n), b = Math.max(lastClicked, n);
+        for (let i = a; i <= b; i++) selected.add(i);
+      } else {
+        selected.has(n) ? selected.delete(n) : selected.add(n);
+        lastClicked = n;
+      }
+      refreshTL();
+    });
+  });
+  function refreshTL() {
+    trackEl.querySelectorAll('.tl-game').forEach(el => {
+      el.classList.toggle('selected', selected.has(+el.dataset.num));
+    });
+    document.getElementById('tl-meta').textContent =
+      selected.size === MOCK.games.length ? `Click bars to filter · Shift+click for range` :
+      `${selected.size} of ${MOCK.games.length} games selected`;
+  }
+  document.querySelectorAll('.tl-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.f;
+      selected = new Set(MOCK.games.filter(g => {
+        if (f === 'all') return true;
+        if (f === 'wins') return g.result === 'W';
+        if (f === 'losses') return g.result === 'L';
+        if (f === 'conf') return g.conf;
+        if (f === 'nonconf') return !g.conf;
+      }).map(g => g.num));
+      refreshTL();
+    });
+  });
+
+  // ── detail placeholder
+  function openDetail(key, title) {
+    document.getElementById('m-title').textContent = title;
+    document.getElementById('modal').classList.add('open');
+  }
+</script>
+</body>
+</html>
