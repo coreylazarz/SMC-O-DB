@@ -1,39 +1,45 @@
-# Saint Mary's Offense — Coach's Dashboard (Design Prototype)
+# Saint Mary's Offense — Coach's Dashboard
 
-Interactive design prototypes for a coach-facing offensive analytics dashboard for the **Saint Mary's Gaels** 2025–26 men's basketball season.
+Interactive coach-facing offensive analytics dashboard for the **Saint Mary's Gaels** 2025–26 men's basketball season.
 
-> **Status:** Visual prototype with mock data. No real-data wiring yet.
+> **Status:** Visual prototype with mock data. Real-data wiring coming later.
 
 ---
 
 ## What's in here
 
-Three design directions you can compare, plus a hub page to flip between them.
+| File | Purpose |
+|---|---|
+| `index.html` | **The dashboard** — main view (5 segment cards + drill-down) |
+| `variants_hub.html` | Side-by-side comparison of three design directions explored early on |
+| `variant_a_minimal.html` | Alternate design direction — Minimal Editorial |
+| `variant_c_dense.html` | Alternate design direction — Data Dense Pro |
+| `_shared/mock_data.js` | All sample data — players, lineups, segments |
+| `_shared/smc_logo.png` | SMC Gaels logo |
 
-| File | Direction | Inspired by |
-|---|---|---|
-| `index.html` | Comparison hub with preview tiles | — |
-| `variant_a_minimal.html` | Minimal editorial / list-led | Linear, Stripe, Vercel |
-| `variant_b_cards.html` | Card grid with drill-in expansion | Figma, Notion, Stripe Atlas |
-| `variant_c_dense.html` | Data-dense pro w/ sidebar | Synergy, InStat, Second Spectrum |
+---
 
-The active design direction is **Variant B**. Click any of the 5 segment cards (Transition, Early/Motion, Ball Screen, Half-Court Sets, Underneath OB) to expand into a drill-down view with breakdowns by trigger/action, top-performer portrait cards, and lineup analysis.
+## How to use
+
+Click any of the 5 segment cards (Transition · Early/Motion · Ball Screen · Half-Court Sets · Underneath OB) to expand into a drill-down view with:
+
+- Four Factors strip (PPP / Possessions / eFG% / TO% / OREB% / FT Rate)
+- First-layer breakdown (triggers, actions, screens, or plays — varies per segment)
+- Top Performers (player portrait cards)
+- Lineup Analysis (scrollable 5-man unit performance)
+- Filter pills above the breakdown for Ball Screen (coverage) and Half-Court (package)
+
+Use the season timeline at the top to filter to specific games, wins/losses, conference, or by month.
 
 ---
 
 ## Tech
 
-Zero build step. Plain HTML + CSS + a tiny `<script>` for interactivity. Open the files directly in a browser.
-
-- **Mock data** lives in `_shared/mock_data.js` — change a number once, see it everywhere
-- **Logo** in `_shared/smc_logo.png`
-- **Fonts** loaded from Google Fonts CDN (Inter)
+Zero build step. Plain HTML + CSS + a tiny `<script>` for interactivity.
 
 ---
 
 ## Run locally
-
-Just open the hub page in a browser:
 
 ```bash
 open index.html        # macOS
@@ -41,7 +47,7 @@ xdg-open index.html    # Linux
 start index.html       # Windows
 ```
 
-Or serve via a quick local server:
+Or via a quick local server:
 
 ```bash
 python3 -m http.server 8000
@@ -50,24 +56,6 @@ python3 -m http.server 8000
 
 ---
 
-## Project structure
-
-```
-.
-├── index.html               # Comparison hub
-├── variant_a_minimal.html   # Minimal editorial direction
-├── variant_b_cards.html     # Card grid direction (current focus)
-├── variant_c_dense.html     # Data-dense pro direction
-├── _shared/
-│   ├── mock_data.js         # All sample data — players, lineups, segments
-│   └── smc_logo.png         # SMC Gaels logo
-└── README.md
-```
-
----
-
 ## Feedback welcome
 
-This is a design exploration. Click around, especially in Variant B → Transition card to see the full drill-down pattern. The other 4 segment cards (Early/Motion, Ball Screen, Half-Court Sets, Underneath OB) also drill in with the same pattern.
-
-If you have thoughts on layout, hierarchy, color, motion, or what data should be surfaced — open an issue or send notes directly.
+Click around, especially into the **Transition** card to see the full drill-down pattern. All 5 segment cards drill in the same way. Layout, hierarchy, color, motion, what data should be surfaced — all feedback welcome.
